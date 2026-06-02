@@ -4,81 +4,75 @@ export default function FAQ() {
   const faqs = [
     {
       question: "Is NexxCloud completely self-hosted?",
-      answer: "Yes. The one-command Docker deployment runs the frontend, API, PostgreSQL, Redis, and workers on your infrastructure. The Windows server application uses an embedded SQLite runtime and local workers.",
+      answer: "Yes. Docker Compose runs the frontend, API, PostgreSQL, Redis, and workers on your infrastructure. The Windows server app packages a local SQLite runtime and local workers.",
+    },
+    {
+      question: "Can NexxCloud install Docker apps?",
+      answer: "Yes. NexxCloud includes a Docker Hub app marketplace with image search, metadata, install flow, installed app controls, live logs, runtime stats, and exposed LAN connection URLs.",
     },
     {
       question: "Does it support local area network (LAN) access?",
-      answer: "Yes. The deployment binds the web interface and API for LAN access, and the backend publishes local discovery details for companion devices.",
+      answer: "Yes. NexxCloud exposes dashboard URLs and installed app URLs using usable LAN IP addresses, so other devices on the same network can connect.",
+    },
+    {
+      question: "Can I download multiple files and folders at once?",
+      answer: "Yes. Select files and folders together, see the total selected size, and download them as a ZIP archive.",
     },
     {
       question: "Is Docker required to run NexxCloud?",
-      answer: "No. Docker Compose is the full multi-service deployment path, while the Windows native server host packages a local SQLite-based runtime.",
+      answer: "No. Docker Compose is the full multi-service deployment path. The Windows native server host packages a local runtime for users who want a desktop-style server app.",
     },
     {
       question: "Is there a Windows server app available?",
-      answer: "The repository includes the Electron native server host and the separate secured Windows desktop client, with Electron Builder packaging and release workflows.",
+      answer: "Yes. The server app includes start, stop, restart, backup, data-folder access, LAN URLs, and a fixed live-log panel that follows the current output.",
     },
     {
       question: "How does the Android mobile app work?",
-      answer: "The Capacitor wrapper loads the existing NexxCloud interface from a local or LAN server and implements network reconnect handling, camera upload, sharing, and splash behavior.",
+      answer: "The Android wrapper loads your LAN-hosted NexxCloud interface and includes reconnect handling plus native camera and share integration.",
     },
     {
       question: "Where can I verify source and licensing?",
-      answer: "Use the linked GitHub repository as the source of truth for available code, licensing, releases, contribution guidance, and security documentation.",
+      answer: "Use the linked GitHub repository as the source of truth for source code, licensing, releases, contribution guidance, and security documentation.",
     },
   ];
 
   return (
-    <section id="faq" className="defer-render py-24 md:py-32 px-6 md:px-12 bg-zinc-950/20 relative z-10">
-      <div className="max-w-3xl mx-auto">
-        
-        {/* Header Block */}
-        <div className="text-center mb-16">
-          <div className="text-xs font-semibold uppercase tracking-widest text-brand-cyan mb-3">
+    <section id="faq" className="defer-render relative z-10 bg-zinc-950/20 px-6 py-24 md:px-12 md:py-32">
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-16 text-center">
+          <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-brand-cyan">
             Have questions?
           </div>
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-foreground">
+          <h2 className="text-3xl font-medium tracking-tight text-foreground md:text-5xl">
             Frequently Asked Questions
           </h2>
-          <p className="text-zinc-400 text-sm md:text-base mt-3 leading-relaxed">
-            Get clear, engineering-first details about the NexxCloud storage system.
+          <p className="mt-3 text-sm leading-relaxed text-zinc-400 md:text-base">
+            Clear details about storage, LAN access, native apps, and Docker app hosting.
           </p>
         </div>
 
-        {/* Custom Accordion Grid */}
         <div className="flex flex-col gap-4">
-          {faqs.map((faq, idx) => {
-            return (
-              <details
-                key={faq.question}
-                className="group rounded-2xl border border-white/5 bg-zinc-900/10 hover:bg-zinc-900/20 transition-all duration-300 overflow-hidden"
-              >
-                <summary
-                  className="flex cursor-pointer list-none items-center justify-between p-6 text-left text-[14px] font-semibold text-zinc-200 hover:text-foreground transition-colors md:text-[15px] [&::-webkit-details-marker]:hidden"
-                >
-                  <div className="flex items-center gap-3 pr-4">
-                    <HelpCircle className="w-4 h-4 text-zinc-500 shrink-0 group-hover:text-brand-cyan transition-colors" />
-                    <span className="tracking-tight leading-tight">{faq.question}</span>
-                  </div>
-                  <ChevronDown
-                    className="w-4 h-4 shrink-0 text-zinc-500 transition-transform duration-500 group-open:rotate-180 group-open:text-brand-cyan"
-                  />
-                </summary>
-
-                {/* Collapsible Content */}
-                <div
-                  id={`faq-panel-${idx}`}
-                  className="border-t border-white/5"
-                >
-                  <p className="p-6 text-[13px] leading-relaxed text-zinc-400 font-medium tracking-tight">
-                    {faq.answer}
-                  </p>
+          {faqs.map((faq, index) => (
+            <details
+              key={faq.question}
+              className="group overflow-hidden rounded-2xl border border-white/5 bg-zinc-900/10 transition-all duration-300 hover:bg-zinc-900/20"
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between p-6 text-left text-[14px] font-semibold text-zinc-200 transition-colors hover:text-foreground md:text-[15px] [&::-webkit-details-marker]:hidden">
+                <div className="flex items-center gap-3 pr-4">
+                  <HelpCircle className="h-4 w-4 shrink-0 text-zinc-500 transition-colors group-hover:text-brand-cyan" />
+                  <span className="leading-tight tracking-tight">{faq.question}</span>
                 </div>
-              </details>
-            );
-          })}
-        </div>
+                <ChevronDown className="h-4 w-4 shrink-0 text-zinc-500 transition-transform duration-500 group-open:rotate-180 group-open:text-brand-cyan" />
+              </summary>
 
+              <div id={`faq-panel-${index}`} className="border-t border-white/5">
+                <p className="p-6 text-[13px] font-medium leading-relaxed tracking-tight text-zinc-400">
+                  {faq.answer}
+                </p>
+              </div>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );

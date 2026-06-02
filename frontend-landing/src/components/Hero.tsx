@@ -1,4 +1,4 @@
-import { ArrowRight, Monitor, Server } from "lucide-react";
+import { ArrowRight, Container, Monitor, Server } from "lucide-react";
 import DashboardMockup from "./DashboardMockup";
 import HeroDeployCommand from "./HeroDeployCommand";
 import HeroVideoBackdrop from "./HeroVideoBackdrop";
@@ -18,22 +18,22 @@ export default function Hero() {
       <div className="relative z-10 w-full max-w-4xl text-center flex flex-col items-center mb-16">
         <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full glass border border-white/5 text-[11px] font-medium tracking-tight mb-8 text-zinc-300">
           <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan" />
-          <span>Self-hosted file platform</span>
+          <span>Self-hosted cloud storage and Docker apps</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl md:text-[80px] font-medium leading-[1.05] tracking-tighter text-foreground mb-6 max-w-3xl">
           Self-hosted cloud storage.<br />
           Your hardware.<br />
-          Your cloud.
+          Your apps.
         </h1>
 
         <p className="text-zinc-400 text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed tracking-tight mb-10 px-4">
-          NexxCloud is private file storage for your own server. It keeps large
-          uploads resumable, delivers media securely, and connects your desktop
-          and mobile devices through one polished interface.
+          NexxCloud is private file storage for your own server with resumable
+          huge uploads, LAN access, bulk downloads, live server logs, and
+          Docker Hub apps you can install from the browser.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4 mb-10 w-full max-w-md justify-center">
+        <div className="flex flex-col sm:flex-row items-center gap-4 mb-10 w-full max-w-3xl justify-center">
           <a
             href="#self-hosting"
             className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 rounded-xl bg-foreground hover:bg-zinc-200 text-background font-semibold text-[14px] transition-all shadow-lg shadow-white/5 active:scale-98 group"
@@ -49,13 +49,21 @@ export default function Hero() {
             id="btn-hero-apps"
           >
             <Monitor className="w-4 h-4 text-zinc-400" />
-            <span>Get Clients</span>
+            <span>Get Downloads</span>
+          </a>
+          <a
+            href="#features"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 rounded-xl border border-brand-cyan/10 hover:border-brand-cyan/25 bg-brand-cyan/5 hover:bg-brand-cyan/10 text-zinc-300 hover:text-foreground font-semibold text-[14px] transition-all shadow-md active:scale-98"
+            id="btn-hero-features"
+          >
+            <Container className="w-4 h-4 text-brand-cyan" />
+            <span>See Apps</span>
           </a>
         </div>
 
         <HeroDeployCommand />
         <p className="text-[11px] text-zinc-500 mt-3 font-mono">
-          One-command Docker deployment for Windows, Linux, and macOS.
+          One-command Docker deployment, native Windows server, desktop client, and Android APK.
         </p>
       </div>
 
@@ -63,7 +71,7 @@ export default function Hero() {
         <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-brand-cyan/10 via-transparent to-brand-purple/10 opacity-40 blur-xl pointer-events-none" />
         <DashboardMockup />
         <p className="text-center text-xs text-zinc-500 mt-4">
-          Web file manager included with NexxCloud deployments. Sample files shown.
+          Product preview: drive, bulk downloads, LAN access, and installed Docker apps.
         </p>
       </div>
     </section>

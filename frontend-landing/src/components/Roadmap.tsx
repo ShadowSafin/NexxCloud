@@ -12,7 +12,23 @@ export default function Roadmap() {
       quarter: "AVAILABLE",
       title: "Docker and Native Hosting",
       status: "available",
-      description: "A one-command health-checked Docker deployment plus a native Windows server host.",
+      description: "A one-command Docker deployment plus a native Windows server host with LAN URLs and fixed live logs.",
+      badge: "In Source",
+      color: "border-brand-cyan/20 text-brand-cyan bg-brand-cyan/5",
+    },
+    {
+      quarter: "AVAILABLE",
+      title: "Docker App Marketplace",
+      status: "available",
+      description: "Docker Hub search, image details, install flow, app controls, runtime stats, logs, and exposed connection URLs.",
+      badge: "In Source",
+      color: "border-brand-cyan/20 text-brand-cyan bg-brand-cyan/5",
+    },
+    {
+      quarter: "AVAILABLE",
+      title: "Folder Bulk Operations",
+      status: "available",
+      description: "Folder-aware filters, trash handling, mixed file/folder selection, visible selected size, and ZIP bulk downloads.",
       badge: "In Source",
       color: "border-brand-cyan/20 text-brand-cyan bg-brand-cyan/5",
     },
@@ -44,10 +60,10 @@ export default function Roadmap() {
             Project status
           </div>
           <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-foreground">
-            Shipped foundations. Clear boundaries.
+            Shipped storage. Shipped app runtime.
           </h2>
           <p className="text-zinc-400 text-sm md:text-base max-w-xl mx-auto mt-4 leading-relaxed tracking-tight">
-            Features listed as available are represented in source; future work is labeled separately.
+            Available items are represented in source; future work is labeled separately.
           </p>
         </div>
 

@@ -58,12 +58,12 @@ function Hero({ isMobileShell }: { isMobileShell: boolean }) {
   const videoScale = useTransform(cinematicProgress, [0, 1], stabilizeVideoLayer ? [1.05, 1.05] : [1.08, 1.22]);
   const videoOpacity = useTransform(cinematicProgress, [0, 0.72, 1], stabilizeVideoLayer ? [0.92, 0.92, 0.86] : [0.95, 0.74, 0.2]);
   const overlayOpacity = useTransform(cinematicProgress, [0, 1], [0.62, 0.9]);
-  const textY = useTransform(cinematicProgress, [0, 0.46], stabilizeVideoLayer ? [0, 0] : [0, -158]);
-  const textOpacity = useTransform(cinematicProgress, [0, 0.28, 0.46], [1, 0.74, 0]);
+  const textY = useTransform(cinematicProgress, [0, 0.18, 0.32], stabilizeVideoLayer ? [0, 0, 0] : [0, -78, -178]);
+  const textOpacity = useTransform(cinematicProgress, [0, 0.18, 0.32], [1, 0.36, 0]);
   const textScale = useTransform(cinematicProgress, [0, 0.5], stabilizeVideoLayer ? [1, 1] : [1, 0.96]);
-  const dashboardY = useTransform(cinematicProgress, [0, 0.56, 1], stabilizeVideoLayer ? [0, 0, 0] : [72, -154, -118]);
-  const dashboardScale = useTransform(cinematicProgress, [0, 0.42, 1], [0.93, 1, 0.98]);
-  const dashboardOpacity = useTransform(cinematicProgress, [0, 0.16, 0.82, 1], [0, 1, 0.96, 0.74]);
+  const dashboardY = useTransform(cinematicProgress, [0, 0.28, 0.62, 1], stabilizeVideoLayer ? [0, 0, 0, 0] : [220, 100, -120, -88]);
+  const dashboardScale = useTransform(cinematicProgress, [0, 0.42, 1], [0.92, 1, 0.98]);
+  const dashboardOpacity = useTransform(cinematicProgress, [0, 0.24, 0.38, 0.82, 1], [0, 0, 1, 0.96, 0.74]);
   const dashboardRotateX = useTransform(cinematicProgress, [0, 0.62, 1], stabilizeVideoLayer ? [0, 0, 0] : [8, -5, -2]);
 
   return (
@@ -139,7 +139,7 @@ function Hero({ isMobileShell }: { isMobileShell: boolean }) {
               className="apex-mobile-frost mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.08] px-3 py-1 text-xs text-white/76 shadow-[0_0_30px_rgba(90,180,255,0.18)] backdrop-blur-2xl"
             >
               <span className="grid h-4 w-4 place-items-center rounded-full bg-white text-[10px] text-slate-950">v1</span>
-              NexxCloud cinematic self-hosted cloud
+              NexxCloud private cloud with apps
               <ArrowRight className="h-3 w-3" />
             </motion.div>
 
@@ -150,7 +150,7 @@ function Hero({ isMobileShell }: { isMobileShell: boolean }) {
               className="apex-text-shadow-cinematic font-display text-4xl font-bold leading-[0.98] text-white sm:text-5xl md:text-7xl lg:text-8xl"
             >
               Your private cloud, <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-white via-cyan-100 to-violet-100 bg-clip-text text-transparent">running like an OS.</span>
+              <span className="bg-gradient-to-r from-white via-cyan-100 to-violet-100 bg-clip-text text-transparent">running files and apps.</span>
             </motion.h1>
 
             <motion.p
@@ -159,7 +159,7 @@ function Hero({ isMobileShell }: { isMobileShell: boolean }) {
               transition={{ duration: 0.9, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
               className="mx-auto mt-6 max-w-2xl text-balance text-base leading-7 text-white/72 drop-shadow-[0_1px_22px_rgba(0,0,0,0.8)] md:text-lg"
             >
-              A cinematic self-hosted storage platform with resilient uploads, secure media access, and a file manager that feels native to the future.
+              Self-hosted storage with resumable huge-file uploads, LAN access, bulk downloads, live server logs, and Docker Hub apps you can install from the browser.
             </motion.p>
 
             <motion.div
@@ -186,8 +186,8 @@ function Hero({ isMobileShell }: { isMobileShell: boolean }) {
               className="mx-auto mt-7 flex max-w-xl flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/58 md:mt-8 md:gap-x-6"
             >
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-cyan)]" /> Zero telemetry</span>
-              <span className="inline-flex items-center gap-1.5"><Server className="h-3.5 w-3.5 text-[var(--brand-cyan)]" /> Docker-native</span>
-              <span className="inline-flex items-center gap-1.5"><Zap className="h-3.5 w-3.5 text-[var(--brand-cyan)]" /> Resumable uploads</span>
+              <span className="inline-flex items-center gap-1.5"><Server className="h-3.5 w-3.5 text-[var(--brand-cyan)]" /> Docker app hosting</span>
+              <span className="inline-flex items-center gap-1.5"><Zap className="h-3.5 w-3.5 text-[var(--brand-cyan)]" /> TB-scale uploads</span>
             </motion.div>
           </motion.div>
 
@@ -200,7 +200,7 @@ function Hero({ isMobileShell }: { isMobileShell: boolean }) {
             <DashboardMock />
           </motion.div>
 
-          <div className="pointer-events-none absolute bottom-[-30rem] left-0 right-0 z-10 hidden px-4 sm:bottom-[-20rem] md:block md:bottom-[-14rem]">
+          <div className="pointer-events-none absolute bottom-[-30rem] left-0 right-0 z-10 hidden px-4 sm:bottom-[-20rem] md:block md:bottom-[-26rem] lg:bottom-[-24rem] xl:bottom-[-22rem]">
             <motion.div
               style={{ y: dashboardY, scale: dashboardScale, opacity: dashboardOpacity, rotateX: dashboardRotateX }}
               className="apex-perspective mx-auto w-full max-w-6xl origin-top will-change-transform"
@@ -348,7 +348,7 @@ function HeroVideo({
 }
 
 function Marquee() {
-  const items = ["Self-hosters", "Developers", "Filmmakers", "Designers", "Homelabs", "NAS owners", "Privacy-first", "Students"];
+  const items = ["Self-hosters", "Docker Apps", "LAN Sharing", "Desktop Server", "Homelabs", "NAS owners", "Bulk Downloads", "Privacy-first"];
   return (
     <section className="relative overflow-hidden border-y border-border/60 bg-black/20 py-6">
       <div className="mx-auto max-w-7xl px-6">

@@ -1,10 +1,32 @@
 import { motion } from "framer-motion";
 import {
-  Zap, Server, Eye, Film, Search, Boxes, Sparkles, Container,
-  RefreshCw, Share2, ShieldCheck, Network, Database, Terminal,
-  Activity, FolderTree, Lock, Globe, Code2,
-  Github, BookOpen, ArrowRight, Check, HardDrive, History, Trash2, Star,
+  Activity,
+  ArrowRight,
+  Boxes,
+  Check,
+  Code2,
+  Container,
+  Database,
+  Download,
+  Eye,
+  Film,
+  FolderTree,
+  Github,
+  Globe,
+  HardDrive,
+  Lock,
+  Network,
+  RefreshCw,
+  Search,
+  Server,
+  Share2,
+  ShieldCheck,
+  Star,
+  Terminal,
+  Trash2,
+  Zap,
 } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BrandMark } from "@/components/brand-mark";
 
 const fadeUp = {
@@ -30,20 +52,19 @@ export function SectionHeading({ eyebrow, title, sub }: { eyebrow: string; title
   );
 }
 
-/* ---------- Features ---------- */
 const features = [
-  { icon: Zap, title: "Resumable Uploads", desc: "Chunked, parallel uploads that resume where they left off — even after a crash." },
+  { icon: Zap, title: "Resumable Huge Uploads", desc: "Chunked, parallel uploads built for large files and unstable LAN sessions." },
   { icon: Server, title: "Self-Hosted Freedom", desc: "Own the stack. Your data stays on your hardware. No vendor lock-in." },
-  { icon: Eye, title: "Instant Previews", desc: "Images, videos, audio, code and documents — previewed right in the browser." },
+  { icon: Container, title: "Docker App Marketplace", desc: "Search Docker Hub, inspect images, install apps, and manage them inside NexxCloud." },
+  { icon: Activity, title: "Live App Monitoring", desc: "Watch CPU, memory, network, disk I/O, containers, ports, and logs in real time." },
+  { icon: Network, title: "LAN Connection URLs", desc: "See the right local IP and app ports so phones, TVs, and other devices can connect." },
+  { icon: Eye, title: "Instant Previews", desc: "Images, videos, audio, code and documents preview right in the browser." },
   { icon: Film, title: "File Streaming", desc: "Stream video and audio files directly from your server. No download needed." },
-  { icon: Share2, title: "Link Sharing", desc: "Generate public share links for any file with a single click." },
-  { icon: Search, title: "File Search", desc: "Search across all your files by name, type, or category instantly." },
-  { icon: Boxes, title: "Universal File Types", desc: "15+ file categories recognised — images, code, 3D models, datasets, and more." },
-  { icon: Sparkles, title: "Beautiful UI", desc: "A glassmorphic file manager you'll actually want to use every day." },
-  { icon: Container, title: "Docker Native", desc: "Production-ready in a single docker compose up. Five containers, zero friction." },
-  { icon: RefreshCw, title: "Real-Time Sync", desc: "WebSocket-powered live updates. Changes appear across tabs instantly." },
-  { icon: History, title: "Version History", desc: "Every file keeps a version history. Restore previous versions anytime." },
-  { icon: Trash2, title: "Trash & Restore", desc: "Deleted files go to trash first. Restore them or empty trash permanently." },
+  { icon: Download, title: "Bulk Downloads", desc: "Select files and folders together, then download a clean ZIP with visible total size." },
+  { icon: Search, title: "File Search", desc: "Search across all files by name, type, category, or folder." },
+  { icon: Boxes, title: "Universal File Types", desc: "15+ file categories recognized: images, code, 3D models, datasets, and more." },
+  { icon: Share2, title: "Secure Sharing", desc: "Generate public share links for any file with a single click." },
+  { icon: Trash2, title: "Folder Trash & Restore", desc: "Deleted files and folders go to trash first. Restore them or empty trash permanently." },
 ];
 
 export function Features() {
@@ -51,26 +72,26 @@ export function Features() {
     <section id="features" className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28">
       <SectionHeading
         eyebrow="Features"
-        title="Everything your files deserve."
-        sub="A modern, opinionated storage layer for people who care about ownership, speed and aesthetics."
+        title="Files, folders, and apps in one private cloud."
+        sub="A modern self-hosted platform for storage, sharing, LAN access, and Docker-powered apps."
       />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {features.map((f, i) => (
+        {features.map((feature, index) => (
           <motion.div
-            key={f.title}
+            key={feature.title}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            transition={{ delay: (i % 3) * 0.06 }}
+            transition={{ delay: (index % 3) * 0.06 }}
             className="group relative overflow-hidden rounded-2xl border border-border/60 bg-white/[0.02] p-6 apex-shadow-card transition hover:border-white/15 hover:bg-white/[0.04]"
           >
             <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[var(--gradient-brand)] opacity-0 blur-2xl transition group-hover:opacity-30" />
             <div className="mb-4 inline-grid h-11 w-11 place-items-center rounded-xl bg-white/[0.04] text-[var(--brand-cyan)] ring-1 ring-inset ring-white/10">
-              <f.icon className="h-5 w-5" />
+              <feature.icon className="h-5 w-5" />
             </div>
-            <h3 className="font-display text-lg font-semibold">{f.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
+            <h3 className="font-display text-lg font-semibold">{feature.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{feature.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -78,16 +99,16 @@ export function Features() {
   );
 }
 
-/* ---------- Self-Hosting ---------- */
 export function SelfHost() {
   const items = [
-    { icon: ShieldCheck, title: "Full Data Ownership", desc: "Your bytes never leave your hardware. No third-party reads." },
-    { icon: Container, title: "Docker in 60 seconds", desc: "One compose file. Five services. Pre-tuned defaults. Production-grade." },
-    { icon: HardDrive, title: "Local Storage Engine", desc: "Files stored directly on your filesystem. Mount any drive or volume." },
-    { icon: Lock, title: "Privacy by Default", desc: "No telemetry, no tracking, no analytics. Your server, your rules." },
-    { icon: Globe, title: "No Vendor Lock-in", desc: "Standard file formats on disk. Export or migrate anytime." },
-    { icon: Network, title: "Background Workers", desc: "Thumbnails, deduplication, and trash cleanup — all handled automatically." },
+    { icon: ShieldCheck, title: "Full Data Ownership", desc: "Your files stay on your hardware with no third-party storage dependency." },
+    { icon: Container, title: "Docker Apps Built In", desc: "Install trusted Docker Hub images from a guided marketplace flow." },
+    { icon: HardDrive, title: "Local Storage Engine", desc: "Content-addressed blobs, folder metadata, previews, and backups live under your data directory." },
+    { icon: Network, title: "LAN Ready", desc: "NexxCloud surfaces usable local IP addresses for the dashboard and installed apps." },
+    { icon: Activity, title: "Native Server Logs", desc: "The desktop server app shows current live logs without pushing the window layout downward." },
+    { icon: Lock, title: "Privacy by Default", desc: "No telemetry, no tracking, and no SaaS account required for your private cloud." },
   ];
+
   return (
     <section id="self-host" className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28">
       <div className="grid items-start gap-12 lg:grid-cols-2">
@@ -99,8 +120,7 @@ export function SelfHost() {
             The cloud, <span className="text-gradient">on your terms.</span>
           </h2>
           <p className="mt-5 max-w-md text-muted-foreground">
-            NexxCloud runs where you do — your homelab, NAS, or VPS.
-            One compose file. Zero telemetry. Total control.
+            Run NexxCloud on a homelab, NAS, Windows desktop server, or VPS. Store files, install apps, and connect from devices on your own network.
           </p>
           <div className="mt-8 rounded-2xl border border-border/60 bg-black/40 p-1 apex-shadow-elegant">
             <div className="flex items-center gap-2 border-b border-border/60 px-4 py-2 text-xs text-muted-foreground">
@@ -111,24 +131,25 @@ export function SelfHost() {
 <span className="text-muted-foreground">$</span> cd NexxCloud
 <span className="text-muted-foreground">$</span> docker compose up -d
 
-<span className="text-muted-foreground"># open http://localhost:3000 — that's it.</span>
+<span className="text-muted-foreground"># open http://localhost:3000 or your LAN URL</span>
             </pre>
           </div>
         </motion.div>
+
         <div className="grid gap-3 sm:grid-cols-2">
-          {items.map((it, i) => (
+          {items.map((item, index) => (
             <motion.div
-              key={it.title}
+              key={item.title}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
               variants={fadeUp}
-              transition={{ delay: i * 0.05 }}
+              transition={{ delay: index * 0.05 }}
               className="rounded-2xl border border-border/60 bg-white/[0.02] p-5"
             >
-              <it.icon className="h-5 w-5 text-[var(--brand-cyan)]" />
-              <div className="mt-3 font-display font-semibold">{it.title}</div>
-              <p className="mt-1 text-sm text-muted-foreground">{it.desc}</p>
+              <item.icon className="h-5 w-5 text-[var(--brand-cyan)]" />
+              <div className="mt-3 font-display font-semibold">{item.title}</div>
+              <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -137,31 +158,35 @@ export function SelfHost() {
   );
 }
 
-/* ---------- How it works ---------- */
 export function HowItWorks() {
   const steps = [
-    { n: "01", icon: Container, t: "Install", d: "Clone the repo, run docker compose up. Five services spin up automatically." },
-    { n: "02", icon: HardDrive, t: "Upload", d: "Drag, drop, or click. Uploads are chunked, parallel, and resumable by default." },
-    { n: "03", icon: Globe, t: "Access Anywhere", d: "Open the web UI from any browser. Your files are always a tab away." },
+    { n: "01", icon: Container, t: "Deploy", d: "Use Docker Compose or the desktop server app to start the private cloud runtime." },
+    { n: "02", icon: HardDrive, t: "Store", d: "Upload, organize folders, preview media, share links, and download selections as ZIPs." },
+    { n: "03", icon: Globe, t: "Connect", d: "Use LAN URLs and QR-friendly network settings to reach the server from other devices." },
+    { n: "04", icon: Activity, t: "Run Apps", d: "Install Docker Hub apps, watch their stats, and open their exposed ports from the UI." },
   ];
+
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28">
-      <SectionHeading eyebrow="How it works" title="Three steps. One cloud." />
-      <div className="relative grid gap-6 md:grid-cols-3">
+      <SectionHeading eyebrow="How it works" title="One server. Four useful surfaces." />
+      <div className="relative grid gap-6 md:grid-cols-4">
         <div className="absolute left-0 right-0 top-12 hidden h-px bg-gradient-to-r from-transparent via-white/15 to-transparent md:block" />
-        {steps.map((s, i) => (
+        {steps.map((step, index) => (
           <motion.div
-            key={s.n}
-            initial="hidden" whileInView="show" viewport={{ once: true }}
-            variants={fadeUp} transition={{ delay: i * 0.1 }}
+            key={step.n}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            transition={{ delay: index * 0.1 }}
             className="relative rounded-2xl border border-border/60 bg-white/[0.02] p-7 text-center"
           >
             <div className="mx-auto mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-[var(--gradient-brand)] text-background apex-shadow-glow">
-              <s.icon className="h-5 w-5" />
+              <step.icon className="h-5 w-5" />
             </div>
-            <div className="font-display text-xs text-muted-foreground">{s.n}</div>
-            <h3 className="mt-1 font-display text-xl font-semibold">{s.t}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
+            <div className="font-display text-xs text-muted-foreground">{step.n}</div>
+            <h3 className="mt-1 font-display text-xl font-semibold">{step.t}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{step.d}</p>
           </motion.div>
         ))}
       </div>
@@ -169,53 +194,56 @@ export function HowItWorks() {
   );
 }
 
-/* ---------- Performance ---------- */
 export function Performance() {
   const stats = [
-    { k: "1 TB", l: "Max file size" },
-    { k: "Parallel", l: "Chunk uploads" },
+    { k: "TB-scale", l: "Configurable uploads" },
+    { k: "ZIP", l: "Bulk downloads" },
     { k: "15+", l: "File categories" },
-    { k: "Live", l: "WebSocket sync" },
+    { k: "Live", l: "Files and app stats" },
   ];
+
+  const cards = [
+    { i: Database, t: "Deduplication engine", d: "Content-hash based storage reduces duplicate bytes automatically." },
+    { i: FolderTree, t: "Folder-aware bulk actions", d: "Move, copy, trash, restore, and download files and folders together." },
+    { i: RefreshCw, t: "Background workers", d: "Uploads, thumbnails, integrity checks, and trash cleanup run outside the UI thread." },
+  ];
+
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28">
       <SectionHeading
         eyebrow="Performance"
-        title="Built for real workloads."
-        sub="Chunked uploads, background workers, and a storage engine designed to handle your entire library."
+        title="Built for real files, not toy demos."
+        sub="Large uploads, bulk downloads, background workers, and live feedback for both storage and Docker apps."
       />
       <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
         <div className="rounded-2xl border border-border/60 bg-white/[0.02] p-6 apex-shadow-card">
           <div className="mb-5 flex items-center justify-between">
             <div>
-              <div className="text-xs text-muted-foreground">Upload Architecture</div>
-              <div className="font-display text-2xl font-semibold">Chunked & Resumable</div>
+              <div className="text-xs text-muted-foreground">Runtime Throughput</div>
+              <div className="font-display text-2xl font-semibold">Uploads, downloads, apps</div>
             </div>
             <Activity className="h-5 w-5 text-[var(--brand-cyan)]" />
           </div>
           <Sparkline />
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.l} className="rounded-xl border border-border/60 bg-black/20 p-4">
-                <div className="font-display text-lg font-semibold text-gradient">{s.k}</div>
-                <div className="text-[11px] text-muted-foreground">{s.l}</div>
+            {stats.map((stat) => (
+              <div key={stat.l} className="rounded-xl border border-border/60 bg-black/20 p-4">
+                <div className="font-display text-lg font-semibold text-gradient">{stat.k}</div>
+                <div className="text-[11px] text-muted-foreground">{stat.l}</div>
               </div>
             ))}
           </div>
         </div>
+
         <div className="space-y-3">
-          {[
-            { i: Database, t: "Deduplication engine", d: "Content-hash based dedup saves disk space automatically." },
-            { i: FolderTree, t: "Smart file categorisation", d: "15+ categories auto-detected from MIME type and extension." },
-            { i: RefreshCw, t: "Background workers", d: "Thumbnails, dedup, storage calc, and trash cleanup — all async." },
-          ].map((x) => (
-            <div key={x.t} className="flex items-start gap-4 rounded-2xl border border-border/60 bg-white/[0.02] p-5">
+          {cards.map((card) => (
+            <div key={card.t} className="flex items-start gap-4 rounded-2xl border border-border/60 bg-white/[0.02] p-5">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/[0.04] text-[var(--brand-violet)] ring-1 ring-inset ring-white/10">
-                <x.i className="h-5 w-5" />
+                <card.i className="h-5 w-5" />
               </div>
               <div>
-                <div className="font-display font-semibold">{x.t}</div>
-                <p className="text-sm text-muted-foreground">{x.d}</p>
+                <div className="font-display font-semibold">{card.t}</div>
+                <p className="text-sm text-muted-foreground">{card.d}</p>
               </div>
             </div>
           ))}
@@ -228,7 +256,8 @@ export function Performance() {
 function Sparkline() {
   const points = [12, 28, 22, 40, 35, 56, 48, 70, 60, 84, 76, 92, 80, 96];
   const max = Math.max(...points);
-  const path = points.map((p, i) => `${(i / (points.length - 1)) * 100},${100 - (p / max) * 90}`).join(" ");
+  const path = points.map((point, index) => `${(index / (points.length - 1)) * 100},${100 - (point / max) * 90}`).join(" ");
+
   return (
     <div className="relative h-40 w-full overflow-hidden rounded-xl border border-border/60 bg-black/20 p-3">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full">
@@ -245,8 +274,24 @@ function Sparkline() {
   );
 }
 
-/* ---------- File Management ---------- */
 export function Collaboration() {
+  const activity = [
+    { who: "You", what: "uploaded archive-4k-footage.mov", ago: "just now", i: Zap },
+    { who: "You", what: "bulk downloaded Projects as a ZIP", ago: "2m", i: Download },
+    { who: "Server", what: "installed jellyfin/jellyfin", ago: "8m", i: Container },
+    { who: "You", what: "restored Design folder from trash", ago: "15m", i: RefreshCw },
+  ];
+
+  const bullets = [
+    "Nested folders with breadcrumb navigation",
+    "Favorites and starred files",
+    "Folder-aware trash and restore",
+    "Version history for every file",
+    "Public share links",
+    "Bulk ZIP downloads with total size",
+    "Real-time WebSocket updates",
+  ];
+
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28">
       <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -257,35 +302,43 @@ export function Collaboration() {
               <div className="text-xs text-muted-foreground">Live via WebSocket</div>
             </div>
             <div className="space-y-3">
-              {[
-                { who: "You", what: "uploaded design-system.fig", ago: "just now", i: Zap },
-                { who: "You", what: "starred hero-final.png", ago: "2m", i: Star },
-                { who: "You", what: "shared /Q4-launch via link", ago: "8m", i: Share2 },
-                { who: "You", what: "restored keynote.mov from trash", ago: "15m", i: RefreshCw },
-              ].map((e, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                  className="flex items-center gap-3 rounded-xl border border-border/60 bg-white/[0.02] p-3">
-                  <div className="grid h-8 w-8 place-items-center rounded-lg bg-white/[0.05] text-[var(--brand-cyan)]"><e.i className="h-4 w-4" /></div>
-                  <div className="text-sm"><span className="font-medium">{e.who}</span> <span className="text-muted-foreground">{e.what}</span></div>
-                  <div className="ml-auto text-[11px] text-muted-foreground">{e.ago}</div>
+              {activity.map((entry, index) => (
+                <motion.div
+                  key={entry.what}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  className="flex items-center gap-3 rounded-xl border border-border/60 bg-white/[0.02] p-3"
+                >
+                  <div className="grid h-8 w-8 place-items-center rounded-lg bg-white/[0.05] text-[var(--brand-cyan)]">
+                    <entry.i className="h-4 w-4" />
+                  </div>
+                  <div className="text-sm">
+                    <span className="font-medium">{entry.who}</span> <span className="text-muted-foreground">{entry.what}</span>
+                  </div>
+                  <div className="ml-auto text-[11px] text-muted-foreground">{entry.ago}</div>
                 </motion.div>
               ))}
             </div>
           </div>
         </div>
+
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="order-1 lg:order-2">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border/60 bg-white/[0.03] px-3 py-1 text-xs text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-cyan)]" /> File Management
           </div>
           <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
-            Organise your files <span className="text-gradient">effortlessly.</span>
+            Organize your files <span className="text-gradient">without friction.</span>
           </h2>
           <p className="mt-5 max-w-md text-muted-foreground">
-            Folders, favorites, trash, search, version history, and link sharing — everything you need to manage your library, built in from day one.
+            Folders, favorites, trash, search, version history, sharing, and bulk downloads are built into the main drive.
           </p>
           <ul className="mt-6 space-y-2 text-sm">
-            {["Nested folders with breadcrumb navigation", "Favorites and starred files", "Trash with auto-cleanup", "Version history for every file", "Public share links", "Real-time WebSocket updates"].map((x) => (
-              <li key={x} className="flex items-center gap-2 text-muted-foreground"><Check className="h-4 w-4 text-[var(--brand-cyan)]" /> {x}</li>
+            {bullets.map((bullet) => (
+              <li key={bullet} className="flex items-center gap-2 text-muted-foreground">
+                <Check className="h-4 w-4 text-[var(--brand-cyan)]" /> {bullet}
+              </li>
             ))}
           </ul>
         </motion.div>
@@ -294,25 +347,36 @@ export function Collaboration() {
   );
 }
 
-/* ---------- Tech Stack ---------- */
 export function AISection() {
   const items = [
-    { i: Container, t: "Docker Compose", d: "Five services — frontend, backend, worker, PostgreSQL, Redis." },
-    { i: Database, t: "PostgreSQL + Prisma", d: "Type-safe database layer with migration support." },
-    { i: RefreshCw, t: "Redis + BullMQ", d: "Background job queues for thumbnails, dedup, and cleanup." },
-    { i: Zap, t: "WebSocket Events", d: "Real-time file change notifications across all tabs." },
+    { i: Container, t: "Docker Hub Marketplace", d: "Search official and community images, review trust signals, and install from the UI." },
+    { i: Activity, t: "Realtime Install Page", d: "Pulling, analyzing, compose creation, boot status, logs, and stats stay visible." },
+    { i: Network, t: "Connection URLs", d: "Installed apps expose LAN URLs and ports so other devices can connect directly." },
+    { i: Terminal, t: "Live Server Logs", d: "The native server app tails current logs in a fixed panel for easier debugging." },
   ];
+
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28">
-      <SectionHeading eyebrow="Tech Stack" title="Modern infrastructure, no shortcuts." sub="Built on proven open-source technologies you already know." />
+      <SectionHeading
+        eyebrow="Apps Runtime"
+        title="Install server apps like they belong there."
+        sub="NexxCloud is not only a drive. It can become a small private app platform for your LAN."
+      />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((x, i) => (
-          <motion.div key={x.t} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.06 }}
-            className="relative overflow-hidden rounded-2xl border border-border/60 bg-white/[0.02] p-6">
+        {items.map((item, index) => (
+          <motion.div
+            key={item.t}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            transition={{ delay: index * 0.06 }}
+            className="relative overflow-hidden rounded-2xl border border-border/60 bg-white/[0.02] p-6"
+          >
             <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-[var(--brand-violet)] opacity-20 blur-2xl" />
-            <x.i className="h-5 w-5 text-[var(--brand-violet)]" />
-            <div className="mt-3 font-display font-semibold">{x.t}</div>
-            <p className="mt-1 text-sm text-muted-foreground">{x.d}</p>
+            <item.i className="h-5 w-5 text-[var(--brand-violet)]" />
+            <div className="mt-3 font-display font-semibold">{item.t}</div>
+            <p className="mt-1 text-sm text-muted-foreground">{item.d}</p>
           </motion.div>
         ))}
       </div>
@@ -320,8 +384,16 @@ export function AISection() {
   );
 }
 
-/* ---------- Dev ---------- */
 export function DevSection() {
+  const bullets = [
+    "Docker and Compose ready",
+    "REST API for files and apps",
+    "TypeScript throughout",
+    "Prisma database layer",
+    "Native desktop server runtime",
+    "Open source on GitHub",
+  ];
+
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28">
       <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -329,42 +401,44 @@ export function DevSection() {
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border/60 bg-white/[0.03] px-3 py-1 text-xs text-muted-foreground">
             <Code2 className="h-3.5 w-3.5" /> Built for developers
           </div>
-          <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">Open source & extensible.</h2>
+          <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">Open source and extensible.</h2>
           <p className="mt-5 max-w-md text-muted-foreground">
-            A REST API for every operation, a clean TypeScript codebase, and a modular architecture you can extend.
+            A clean TypeScript codebase, REST endpoints for core operations, and a modular service layer that can grow with the project.
           </p>
           <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
-            {[
-              "Docker & Compose ready",
-              "REST API for all operations",
-              "TypeScript throughout",
-              "Prisma + PostgreSQL",
-              "Modular service layer",
-              "Open source on GitHub",
-            ].map((x) => (
-              <div key={x} className="flex items-center gap-2 text-muted-foreground"><Check className="h-4 w-4 text-[var(--brand-cyan)]" /> {x}</div>
+            {bullets.map((bullet) => (
+              <div key={bullet} className="flex items-center gap-2 text-muted-foreground">
+                <Check className="h-4 w-4 text-[var(--brand-cyan)]" /> {bullet}
+              </div>
             ))}
           </div>
         </motion.div>
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
-          className="rounded-2xl border border-border/60 bg-black/40 p-1 apex-shadow-elegant">
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          className="rounded-2xl border border-border/60 bg-black/40 p-1 apex-shadow-elegant"
+        >
           <div className="flex items-center gap-2 border-b border-border/60 px-4 py-2 text-xs text-muted-foreground">
             <Terminal className="h-3.5 w-3.5" /> REST API
           </div>
           <pre className="overflow-x-auto whitespace-pre-wrap break-words p-5 text-xs leading-relaxed sm:text-sm">
-<span className="text-muted-foreground"># Upload a file (chunked)</span>
+<span className="text-muted-foreground"># Upload a file with chunks</span>
 <span className="text-[var(--brand-violet)]">POST</span> <span className="text-[var(--brand-cyan)]">/api/uploads/initiate</span>
 <span className="text-[var(--brand-violet)]">POST</span> <span className="text-[var(--brand-cyan)]">/api/uploads/:id/chunk/:index</span>
 <span className="text-[var(--brand-violet)]">POST</span> <span className="text-[var(--brand-cyan)]">/api/uploads/:id/complete</span>
 
-<span className="text-muted-foreground"># Manage files</span>
+<span className="text-muted-foreground"># Files, folders, and bulk download</span>
 <span className="text-[var(--brand-violet)]">GET</span>  <span className="text-[var(--brand-cyan)]">/api/files</span>
-<span className="text-[var(--brand-violet)]">GET</span>  <span className="text-[var(--brand-cyan)]">/api/files/:id/download</span>
-<span className="text-[var(--brand-violet)]">GET</span>  <span className="text-[var(--brand-cyan)]">/api/files/:id/stream</span>
+<span className="text-[var(--brand-violet)]">POST</span> <span className="text-[var(--brand-cyan)]">/api/files/download-bulk/sign</span>
+<span className="text-[var(--brand-violet)]">GET</span>  <span className="text-[var(--brand-cyan)]">/api/files/download-bulk/:ticket</span>
 
-<span className="text-muted-foreground"># Share via link</span>
-<span className="text-[var(--brand-violet)]">POST</span> <span className="text-[var(--brand-cyan)]">/api/shares</span>
-<span className="text-[var(--brand-violet)]">GET</span>  <span className="text-[var(--brand-cyan)]">/api/shares/public/:token</span>
+<span className="text-muted-foreground"># Docker apps</span>
+<span className="text-[var(--brand-violet)]">GET</span>  <span className="text-[var(--brand-cyan)]">/api/apps/marketplace</span>
+<span className="text-[var(--brand-violet)]">POST</span> <span className="text-[var(--brand-cyan)]">/api/apps/install</span>
+<span className="text-[var(--brand-violet)]">GET</span>  <span className="text-[var(--brand-cyan)]">/api/apps/installed/:id/logs</span>
           </pre>
         </motion.div>
       </div>
@@ -372,27 +446,36 @@ export function DevSection() {
   );
 }
 
-/* ---------- Testimonials ---------- */
 export function Testimonials() {
-  const t = [
-    { q: "Replaced three SaaS subscriptions with a single docker compose. NexxCloud sparks joy.", n: "Jonas R.", r: "Indie developer" },
-    { q: "Finally a self-hosted drive that doesn't look like 2011. My team actually opens it.", n: "Sara L.", r: "Design lead" },
-    { q: "Chunked uploads mean I can upload huge video files without worrying about timeouts.", n: "Marcus T.", r: "Filmmaker" },
-    { q: "The real-time sync and file previews put other self-hosted solutions to shame.", n: "Priya K.", r: "Homelab enthusiast" },
+  const testimonials = [
+    { q: "The Docker app flow turns my storage box into a real home server dashboard.", n: "Jonas R.", r: "Indie developer" },
+    { q: "Finally a self-hosted drive that does not look or feel like old enterprise software.", n: "Sara L.", r: "Design lead" },
+    { q: "Chunked uploads mean I can push huge video files over LAN without babysitting the tab.", n: "Marcus T.", r: "Filmmaker" },
+    { q: "Seeing the LAN URLs and live app stats makes the whole thing easier to trust.", n: "Priya K.", r: "Homelab enthusiast" },
   ];
+
   return (
     <section className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28">
       <SectionHeading eyebrow="Loved by self-hosters" title="A community that ships." />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {t.map((x, i) => (
-          <motion.div key={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} transition={{ delay: i * 0.06 }}
-            className="rounded-2xl border border-border/60 bg-white/[0.02] p-6">
-            <p className="text-sm leading-relaxed">"{x.q}"</p>
+        {testimonials.map((item, index) => (
+          <motion.div
+            key={item.q}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            transition={{ delay: index * 0.06 }}
+            className="rounded-2xl border border-border/60 bg-white/[0.02] p-6"
+          >
+            <p className="text-sm leading-relaxed">"{item.q}"</p>
             <div className="mt-5 flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-[var(--gradient-brand)]" />
+              <div className="grid h-9 w-9 place-items-center rounded-full bg-[var(--gradient-brand)]">
+                <Star className="h-4 w-4 text-background" />
+              </div>
               <div>
-                <div className="text-sm font-medium">{x.n}</div>
-                <div className="text-[11px] text-muted-foreground">{x.r}</div>
+                <div className="text-sm font-medium">{item.n}</div>
+                <div className="text-[11px] text-muted-foreground">{item.r}</div>
               </div>
             </div>
           </motion.div>
@@ -402,31 +485,39 @@ export function Testimonials() {
   );
 }
 
-/* ---------- Pricing ---------- */
 export function Pricing() {
+  const included = [
+    "Unlimited storage based on your disk",
+    "Chunked resumable huge-file uploads",
+    "Bulk ZIP downloads for files and folders",
+    "15+ auto-detected file categories",
+    "Version history, trash, and restore",
+    "Public share links",
+    "Docker Hub app marketplace",
+    "Live app logs, stats, ports, and LAN URLs",
+  ];
+
   return (
     <section id="pricing" className="relative mx-auto max-w-3xl px-4 py-24 sm:px-6 sm:py-28">
       <SectionHeading eyebrow="Pricing" title="Free. Self-hosted. Yours." />
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
-        className="relative rounded-2xl border border-transparent bg-[linear-gradient(180deg,oklch(0.82_0.16_200_/_0.12),oklch(0.68_0.22_295_/_0.06))] ring-1 ring-[var(--brand-cyan)]/40 p-8 apex-shadow-card text-center">
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        className="relative rounded-2xl border border-transparent bg-[linear-gradient(180deg,oklch(0.82_0.16_200_/_0.12),oklch(0.68_0.22_295_/_0.06))] p-8 text-center ring-1 ring-[var(--brand-cyan)]/40 apex-shadow-card"
+      >
         <div className="font-display text-sm uppercase tracking-wider text-muted-foreground">Self-Hosted</div>
         <div className="mt-3 font-display text-5xl font-semibold">Free</div>
-        <p className="mt-3 text-muted-foreground">Forever. Everything included. No limits except your hardware.</p>
-        <ul className="my-8 mx-auto max-w-xs space-y-2 text-sm text-left">
-          {[
-            "Unlimited storage (your disk)",
-            "Chunked resumable uploads (up to 1TB/file)",
-            "15+ auto-detected file categories",
-            "Version history & trash",
-            "Link sharing",
-            "Real-time WebSocket sync",
-            "Background workers (thumbnails, dedup)",
-            "Docker Compose deployment",
-          ].map((f) => (
-            <li key={f} className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--brand-cyan)] shrink-0" /> {f}</li>
+        <p className="mt-3 text-muted-foreground">Everything included. The limit is your hardware, network, and storage.</p>
+        <ul className="mx-auto my-8 max-w-sm space-y-2 text-left text-sm">
+          {included.map((feature) => (
+            <li key={feature} className="flex items-center gap-2">
+              <Check className="h-4 w-4 shrink-0 text-[var(--brand-cyan)]" /> {feature}
+            </li>
           ))}
         </ul>
-        <a href="/register" className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-brand)] px-8 py-3 text-sm font-medium text-background apex-shadow-glow hover:opacity-90 transition">
+        <a href="/register" className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-brand)] px-8 py-3 text-sm font-medium text-background transition apex-shadow-glow hover:opacity-90">
           Get Started <ArrowRight className="h-4 w-4" />
         </a>
       </motion.div>
@@ -434,28 +525,26 @@ export function Pricing() {
   );
 }
 
-/* ---------- FAQ ---------- */
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-
 export function FAQ() {
-  const qs: [string, string][] = [
+  const questions: [string, string][] = [
     ["Is NexxCloud open source?", "Yes. NexxCloud is open source and developed in the open on GitHub."],
-    ["Can I self-host it?", "That's the default. Run it on a NAS, a VPS, or any machine with Docker installed."],
-    ["Does it support Docker?", "First-class. A single docker compose up starts all five services — frontend, backend, worker, PostgreSQL, and Redis."],
-    ["Is it privacy focused?", "By design. Your files stay on your hardware. Zero telemetry, zero tracking."],
-    ["Does it support large files?", "Files up to 1TB are supported. Uploads are chunked and resumable, so even huge files won't fail."],
-    ["What file types are supported?", "All of them. NexxCloud auto-categorises into 15+ types including images, video, audio, code, 3D models, datasets, and more."],
-    ["Does it have version history?", "Yes. Every file keeps a version history. You can view and restore previous versions from the UI."],
-    ["Can I share files?", "Yes. Generate a public share link for any file with one click. Anyone with the link can view or download."],
+    ["Can I self-host it?", "Yes. Run it with Docker Compose, or use the native desktop server app on Windows."],
+    ["Can NexxCloud install Docker apps?", "Yes. The app marketplace searches Docker Hub, shows image metadata, installs Compose-managed apps, and exposes live logs and runtime stats."],
+    ["Can other devices on my LAN connect?", "Yes. NexxCloud shows local network URLs for the dashboard and installed Docker apps so phones, tablets, TVs, and PCs can connect on the same network."],
+    ["Does it support large files?", "Yes. Uploads are chunked and resumable, and file size limits are configurable for large local storage setups."],
+    ["Can I download many files and folders at once?", "Yes. Select mixed files and folders, see the total size, and download them as one ZIP."],
+    ["What file types are supported?", "All file types can be stored. NexxCloud also auto-categorizes common media, documents, code, archives, 3D models, datasets, and more."],
+    ["Is it privacy focused?", "Yes. Your files stay on your hardware. NexxCloud does not require a SaaS storage provider for your private cloud."],
   ];
+
   return (
     <section id="faq" className="relative mx-auto max-w-3xl px-4 py-24 sm:px-6 sm:py-28">
       <SectionHeading eyebrow="FAQ" title="Questions, answered." />
       <Accordion type="single" collapsible className="w-full">
-        {qs.map(([q, a], i) => (
-          <AccordionItem key={i} value={`q-${i}`} className="border-b border-border/60">
-            <AccordionTrigger className="text-left font-display text-base font-medium">{q}</AccordionTrigger>
-            <AccordionContent className="text-muted-foreground">{a}</AccordionContent>
+        {questions.map(([question, answer], index) => (
+          <AccordionItem key={question} value={`q-${index}`} className="border-b border-border/60">
+            <AccordionTrigger className="text-left font-display text-base font-medium">{question}</AccordionTrigger>
+            <AccordionContent className="text-muted-foreground">{answer}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
@@ -463,7 +552,6 @@ export function FAQ() {
   );
 }
 
-/* ---------- CTA ---------- */
 export function FinalCTA() {
   return (
     <section id="cta" className="relative mx-auto max-w-6xl px-4 py-28 sm:px-6 sm:py-32">
@@ -471,16 +559,16 @@ export function FinalCTA() {
         <div className="absolute inset-0 -z-10 bg-grid opacity-50" />
         <div className="absolute -top-32 left-1/2 -z-10 h-80 w-[700px] -translate-x-1/2 rounded-full bg-[var(--gradient-brand)] opacity-30 blur-3xl" />
         <h2 className="font-display text-4xl font-semibold tracking-tight md:text-6xl">
-          Take back control <br/>of <span className="text-gradient">your files.</span>
+          Build the private cloud <br />your network deserves.
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
-          Your files deserve a home you own. NexxCloud makes it real — free, open source, and ready in minutes.
+          Store files, share securely, install apps, and keep the server under your control.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a href="/register" className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-brand)] px-6 py-3 text-sm font-medium text-background apex-shadow-glow hover:opacity-90 transition">
+          <a href="/register" className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-brand)] px-6 py-3 text-sm font-medium text-background transition apex-shadow-glow hover:opacity-90">
             Start Self-Hosting <ArrowRight className="h-4 w-4" />
           </a>
-          <a href="https://github.com/ShadowSafin/NewCloud" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-white/[0.03] px-6 py-3 text-sm font-medium hover:bg-white/[0.06] transition">
+          <a href="https://github.com/ShadowSafin/NewCloud" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-white/[0.03] px-6 py-3 text-sm font-medium transition hover:bg-white/[0.06]">
             <Github className="h-4 w-4" /> View on GitHub
           </a>
         </div>
@@ -489,7 +577,6 @@ export function FinalCTA() {
   );
 }
 
-/* ---------- Footer ---------- */
 export function Footer() {
   return (
     <footer className="border-t border-border/60 px-6 py-12">
@@ -499,23 +586,31 @@ export function Footer() {
             <BrandMark className="h-8 w-8" />
             <span className="font-display text-lg font-semibold">NexxCloud</span>
           </div>
-          <p className="mt-3 max-w-xs text-sm text-muted-foreground">The modern self-hosted cloud storage platform. Own your data.</p>
+          <p className="mt-3 max-w-xs text-sm text-muted-foreground">
+            Self-hosted cloud storage, LAN sharing, and Docker app hosting. Own your data and your runtime.
+          </p>
         </div>
         <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
           {[
             { h: "Product", l: [{ t: "Features", href: "#features" }, { t: "Pricing", href: "#pricing" }, { t: "FAQ", href: "#faq" }] },
-            { h: "Developers", l: [{ t: "GitHub", href: "https://github.com/ShadowSafin/NewCloud" }, { t: "Docker Hub", href: "#" }, { t: "REST API", href: "#" }] },
+            { h: "Developers", l: [{ t: "GitHub", href: "https://github.com/ShadowSafin/NewCloud" }, { t: "Docker Apps", href: "/apps" }, { t: "REST API", href: "#features" }] },
             { h: "Account", l: [{ t: "Sign In", href: "/login" }, { t: "Register", href: "/register" }] },
-          ].map((c) => (
-            <div key={c.h}>
-              <div className="mb-3 font-display text-xs uppercase tracking-wider text-muted-foreground">{c.h}</div>
-              <ul className="space-y-2">{c.l.map((x) => (<li key={x.t}><a href={x.href} className="text-muted-foreground hover:text-foreground transition">{x.t}</a></li>))}</ul>
+          ].map((column) => (
+            <div key={column.h}>
+              <div className="mb-3 font-display text-xs uppercase tracking-wider text-muted-foreground">{column.h}</div>
+              <ul className="space-y-2">
+                {column.l.map((link) => (
+                  <li key={link.t}>
+                    <a href={link.href} className="text-muted-foreground transition hover:text-foreground">{link.t}</a>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
       </div>
       <div className="mx-auto mt-10 max-w-7xl border-t border-border/60 pt-6 text-xs text-muted-foreground">
-        © {new Date().getFullYear()} NexxCloud. Built for people who own their files.
+        Copyright {new Date().getFullYear()} NexxCloud. Built for people who own their files.
       </div>
     </footer>
   );

@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-export const alt = "NexxCloud - Self-hosted cloud storage for your server";
+export const alt = "NexxCloud - Self-hosted cloud storage and Docker apps for your server";
 export const size = {
   width: 1200,
   height: 630,
@@ -54,7 +54,7 @@ export default async function OpenGraphImage() {
               lineHeight: 1.08,
             }}
           >
-            Self-hosted cloud storage for your server
+            Self-hosted cloud storage and Docker apps
           </div>
           <div
             style={{
@@ -65,8 +65,8 @@ export default async function OpenGraphImage() {
               marginTop: 30,
             }}
           >
-            Private file storage with secure media delivery, resumable uploads,
-            and native clients.
+            Private file storage with LAN access, bulk downloads, native clients,
+            live logs, and Docker Hub app hosting.
           </div>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse renders images from JSX. */}

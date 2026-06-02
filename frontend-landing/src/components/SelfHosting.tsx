@@ -9,15 +9,16 @@ export default function SelfHosting() {
         {/* Architecture details and copy */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           <div className="text-xs font-semibold uppercase tracking-widest text-brand-purple">
-            Docker deployment
+            Docker and native deployment
           </div>
           <h2 className="text-3xl md:text-5xl font-medium tracking-tight leading-[1.1] text-foreground">
-            One stack. Your storage.
+            One stack. Your storage and apps.
           </h2>
           <p className="text-zinc-400 text-sm md:text-base leading-relaxed tracking-tight">
             Compose starts the web app, API, PostgreSQL metadata store, Redis queue
             transport, and background workers with persistent storage and health checks.
-            Install it in one command with Docker Engine or Docker Desktop and Git available.
+            The native Windows server app packages a local runtime with LAN URLs, live logs,
+            backups, and controls for users who prefer a desktop host.
           </p>
 
           {/* Core Architecture SVG diagram */}
@@ -54,7 +55,7 @@ export default function SelfHosting() {
               {/* Worker Container */}
               <rect x="295" y="25" width="95" height="50" rx="6" fill="#18181b" stroke="#3f3f46" strokeWidth="1" />
               <text x="342" y="46" fill="#f4f4f5" fontSize="9" textAnchor="middle" fontWeight="600">Background Worker</text>
-              <text x="342" y="58" fill="#9ca3af" fontSize="7" textAnchor="middle" fontFamily="monospace">Thumbnails / Integrity</text>
+              <text x="342" y="58" fill="#9ca3af" fontSize="7" textAnchor="middle" fontFamily="monospace">Thumbnails / Apps / Integrity</text>
 
               {/* Storage Mounted Container */}
               <rect x="295" y="95" width="95" height="55" rx="6" fill="#18181b" stroke="#3f3f46" strokeWidth="1" />
@@ -69,7 +70,7 @@ export default function SelfHosting() {
 
           <div className="flex items-center gap-3 text-xs text-zinc-500 font-mono mt-2">
             <ShieldCheck className="w-4 h-4 text-emerald-500" />
-            <span>Setup generates secrets and deploys committed Prisma migrations.</span>
+            <span>Setup generates secrets, applies migrations, and keeps runtime services observable.</span>
           </div>
         </div>
 
