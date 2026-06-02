@@ -15,6 +15,33 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
+CREATE TABLE "installed_apps" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "user_id" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL DEFAULT '',
+    "icon" TEXT,
+    "category" TEXT NOT NULL,
+    "source" TEXT NOT NULL DEFAULT 'docker-hub',
+    "status" TEXT NOT NULL DEFAULT 'installing',
+    "compose_project" TEXT NOT NULL,
+    "compose_path" TEXT NOT NULL,
+    "workspace_path" TEXT NOT NULL,
+    "app_url" TEXT,
+    "image" TEXT,
+    "version" TEXT,
+    "ports" TEXT NOT NULL DEFAULT '[]',
+    "mounts" TEXT NOT NULL DEFAULT '[]',
+    "env" TEXT NOT NULL DEFAULT '{}',
+    "metadata" TEXT NOT NULL DEFAULT '{}',
+    "last_error" TEXT,
+    "installed_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL,
+    CONSTRAINT "installed_apps_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "storage_blobs" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "hash" TEXT NOT NULL,
@@ -219,6 +246,18 @@ CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "installed_apps_compose_project_key" ON "installed_apps"("compose_project");
+
+-- CreateIndex
+CREATE INDEX "installed_apps_user_id_status_idx" ON "installed_apps"("user_id", "status");
+
+-- CreateIndex
+CREATE INDEX "installed_apps_slug_idx" ON "installed_apps"("slug");
+
+-- CreateIndex
+CREATE INDEX "installed_apps_category_idx" ON "installed_apps"("category");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "storage_blobs_hash_key" ON "storage_blobs"("hash");

@@ -13,9 +13,10 @@ function formatLogEntry(entry) {
 
 function renderLogs() {
   const output = byId("logOutput");
-  const wasAtBottom = output.scrollTop + output.clientHeight >= output.scrollHeight - 12;
   output.textContent = logs.length ? logs.map(formatLogEntry).join("\n") : "Waiting for server output...";
-  if (wasAtBottom) output.scrollTop = output.scrollHeight;
+  requestAnimationFrame(() => {
+    output.scrollTop = output.scrollHeight;
+  });
 }
 
 function addLog(entry) {
