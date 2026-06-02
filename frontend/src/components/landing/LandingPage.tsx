@@ -157,7 +157,7 @@ function Hero({ isMobileShell }: { isMobileShell: boolean }) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-              className="mx-auto mt-6 max-w-2xl text-balance text-base leading-7 text-white/72 drop-shadow-[0_1px_22px_rgba(0,0,0,0.8)] md:text-lg"
+              className="mx-auto mt-5 max-w-xl text-balance text-sm leading-6 text-white/70 drop-shadow-[0_1px_22px_rgba(0,0,0,0.8)] md:text-base md:leading-7"
             >
               Self-hosted storage with resumable huge-file uploads, LAN access, bulk downloads, live server logs, and Docker Hub apps you can install from the browser.
             </motion.p>
