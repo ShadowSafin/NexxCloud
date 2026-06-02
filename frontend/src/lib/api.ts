@@ -232,7 +232,7 @@ export const filesApi = {
         onProgress(percent);
       } : undefined,
     }),
-  list: (params?: { folderId?: string; search?: string; sort?: string; order?: string }) =>
+  list: (params?: { folderId?: string; search?: string; sort?: string; order?: string; category?: string; limit?: number; offset?: number }) =>
     apiClient.get("/files", { params }),
   getById: (id: string) => apiClient.get(`/files/${id}`),
   download: async (id: string) =>
@@ -344,4 +344,140 @@ export const uploadsApi = {
 export const mediaApi = {
   sign: (fileId: string, type: "stream" | "download" | "thumbnail", size?: "small" | "medium" | "large") =>
     apiClient.post("/media/sign", { fileId, type, size }),
+};
+
+export interface MarketplaceImage {
+  name: string;
+  namespace: string;
+  repository: string;
+  image: string;
+  description: string;
+  pullCount: number;
+  starCount: number;
+  official: boolean;
+  verified: boolean;
+  popular: boolean;
+  automated: boolean;
+  confidence: number;
+  risk: "low" | "medium" | "high";
+  trustIndicators: string[];
+  warnings: string[];
+  lastUpdated: string | null;
+  categories: string[];
+  storageSize: number | null;
+  logoUrl: string | null;
+  dockerHubUrl: string;
+}
+
+export interface MarketplaceImageDetails extends MarketplaceImage {
+  fullDescription: string;
+  latestTag: string;
+  tags: Array<{
+    name: string;
+    lastUpdated: string | null;
+    size: number | null;
+    digest: string | null;
+    architectures: string[];
+  }>;
+}
+
+export interface InstalledApp {
+  id: string;
+  userId?: string;
+  slug?: string;
+  name: string;
+  description: string;
+  icon?: string | null;
+  category: string;
+  source: string;
+  status: string;
+  composeProject: string;
+  appUrl: string | null;
+  image: string;
+  version: string;
+  ports: Array<{ hostPort?: number | null; containerPort: number; protocol?: "tcp" | "udp" }>;
+  mounts: any;
+  environment: Record<string, string>;
+  metadata: any;
+  lastError: string | null;
+  installedAt: string;
+  updatedAt: string;
+  runtime?: {
+    status: string;
+    appUrl: string | null;
+    connectionUrls?: string[];
+    portMappings?: Array<{
+      containerPort: number;
+      hostPort: number;
+      protocol: "tcp" | "udp";
+      hostIp: string;
+      urls: string[];
+    }>;
+    containers?: Array<{
+      id: string;
+      name: string;
+      image: string | null;
+      status: string;
+      startedAt: string | null;
+      ports: Record<string, unknown>;
+      portMappings?: Array<{
+        containerPort: number;
+        hostPort: number;
+        protocol: "tcp" | "udp";
+        hostIp: string;
+        urls: string[];
+      }>;
+    }>;
+    stats: Array<{
+      name: string;
+      cpu: string | null;
+      memory: string | null;
+      memoryPercent: string | null;
+      network: string | null;
+      block: string | null;
+    }> | null;
+  } | null;
+}
+
+export interface DockerStatus {
+  available: boolean;
+  dockerCli: boolean;
+  daemon: boolean;
+  compose: boolean;
+  dockerVersion: string | null;
+  composeVersion: string | null;
+  mode: "native" | "container" | "unknown";
+  guidance: string[];
+  error?: string;
+}
+
+export const appsApi = {
+  dockerStatus: () => apiClient.get<{ success: boolean; data: DockerStatus }>("/apps/docker/status"),
+  marketplace: (params?: {
+    search?: string;
+    page?: number;
+    pageSize?: number;
+    filter?: "all" | "official" | "verified" | "popular" | "recent";
+  }) => apiClient.get("/apps/marketplace", { params }),
+  marketplaceDetails: (namespace: string, repository: string) =>
+    apiClient.get<{ success: boolean; data: MarketplaceImageDetails }>(
+      `/apps/marketplace/${encodeURIComponent(namespace)}/${encodeURIComponent(repository)}`
+    ),
+  analyze: (data: { image: string; tag?: string; pull?: boolean }) =>
+    apiClient.post("/apps/marketplace/analyze", data),
+  install: (data: {
+    image: string;
+    tag?: string;
+    name?: string;
+    ports?: Array<{ hostPort?: number | null; containerPort: number; protocol?: "tcp" | "udp" }>;
+    environment?: Record<string, string>;
+    volumes?: Array<{ containerPath: string; mode?: "ro" | "rw" }>;
+    storageMappings?: Array<{ folderId?: string; folderName?: string; containerPath: string; mode?: "ro" | "rw" }>;
+    restartPolicy?: "unless-stopped" | "always" | "on-failure" | "no";
+  }) => apiClient.post<{ success: boolean; data: InstalledApp }>("/apps/install", data),
+  installed: () => apiClient.get<{ success: boolean; data: InstalledApp[] }>("/apps/installed"),
+  installedById: (id: string) => apiClient.get<{ success: boolean; data: InstalledApp }>(`/apps/installed/${id}`),
+  action: (id: string, action: "start" | "stop" | "restart" | "update" | "remove") =>
+    apiClient.post(`/apps/installed/${id}/${action}`),
+  logs: (id: string, tail?: number) => apiClient.get(`/apps/installed/${id}/logs`, { params: { tail } }),
 };

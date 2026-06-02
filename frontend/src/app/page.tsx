@@ -231,6 +231,7 @@ function DashboardContent() {
   const isSpecialView = !!view;
   const isTrashView = view === "trash";
   const isRecentView = view === "recent";
+  const isPhotosView = view === "photos";
   const isStarredView = view === "starred";
   const displayedFolderId = store.currentFolderId;
   const refreshFiles = store.fetchFiles;
@@ -336,6 +337,11 @@ function DashboardContent() {
       setViewLoading(true);
       if (isRecentView) {
         filesApi.recent().then((res) => setViewFiles(res.data.data)).catch(() => setViewFiles([])).finally(() => setViewLoading(false));
+      } else if (isPhotosView) {
+        filesApi.list({ category: "images", limit: 500 })
+          .then((res) => { setViewFiles(res.data.data); setViewFolders([]); })
+          .catch(() => setViewFiles([]))
+          .finally(() => setViewLoading(false));
       } else if (isStarredView) {
         filesApi.favorites().then((res) => setViewFiles(res.data.data)).catch(() => setViewFiles([])).finally(() => setViewLoading(false));
       } else if (isTrashView) {
@@ -793,14 +799,25 @@ function DashboardContent() {
               </div>
             </div>
           )}
+          {isPhotosView && (
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
+                <Image className="w-4.5 h-4.5 text-white/50" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-white">Photos</h2>
+                <p className="text-xs text-white/40">All image files across your drive</p>
+              </div>
+            </div>
+          )}
           {isStarredView && (
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
                 <Star className="w-4.5 h-4.5 text-white/50" />
               </div>
               <div>
-                <h2 className="text-base font-semibold text-white">Starred</h2>
-                <p className="text-xs text-white/40">Your starred files</p>
+                <h2 className="text-base font-semibold text-white">Favorites</h2>
+                <p className="text-xs text-white/40">Your favorite files</p>
               </div>
             </div>
           )}
@@ -864,6 +881,8 @@ function DashboardContent() {
                   <Trash2 className="w-7 h-7 text-white/30" />
                 ) : isRecentView ? (
                   <Clock className="w-7 h-7 text-white/30" />
+                ) : isPhotosView ? (
+                  <Image className="w-7 h-7 text-white/30" />
                 ) : isStarredView ? (
                   <Star className="w-7 h-7 text-white/30" />
                 ) : activeCategoryFilter ? (
@@ -880,8 +899,10 @@ function DashboardContent() {
                   ? "Trash is empty"
                   : isRecentView
                   ? "No recent files"
+                  : isPhotosView
+                  ? "No photos found"
                   : isStarredView
-                  ? "No starred files"
+                  ? "No favorite files"
                   : isFolderFilter
                   ? "No folders found"
                   : activeCategoryFilter
@@ -895,8 +916,10 @@ function DashboardContent() {
                   ? "Deleted files will appear here"
                   : isRecentView
                   ? "Your recently uploaded files will appear here"
+                  : isPhotosView
+                  ? "Image files you upload will appear here"
                   : isStarredView
-                  ? "Star your favorite files for quick access"
+                  ? "Favorite files for quick access"
                   : isFolderFilter
                   ? "Create a folder to see it here"
                   : activeCategoryFilter

@@ -34,7 +34,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN apk add --no-cache libc6-compat openssl ffmpeg poppler-utils
+RUN apk add --no-cache libc6-compat openssl ffmpeg poppler-utils docker-cli docker-cli-compose
 
 COPY --from=production-dependencies /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist

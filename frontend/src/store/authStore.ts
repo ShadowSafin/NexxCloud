@@ -6,6 +6,7 @@ interface User {
   id: string;
   username: string;
   email: string;
+  role?: "admin" | "user" | string;
   avatar: string | null;
   createdAt: string;
 }
@@ -122,6 +123,9 @@ export const useAuthStore = create<AuthState>()(
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated(true);
+        if (state?.isAuthenticated && state.accessToken) {
+          void state.fetchUser();
+        }
       },
     }
   )

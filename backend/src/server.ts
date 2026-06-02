@@ -27,6 +27,7 @@ import shareRoutes from "./routes/shareRoutes";
 import uploadRoutes from "./routes/uploadRoutes";
 import versionRoutes from "./routes/versionRoutes";
 import mediaRoutes from "./routes/mediaRoutes";
+import appRoutes from "./routes/appRoutes";
 import { FileService } from "./services/fileService";
 import { wsServer } from "./websocket";
 import { mdnsService } from "./services/mdnsService";
@@ -249,6 +250,7 @@ app.use("/api/uploads", uploadRoutes);
 app.use("/api/versions", versionRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/network", networkRoutes);
+app.use("/api/apps", appRoutes);
 
 // Error handling
 app.use(errorHandler);

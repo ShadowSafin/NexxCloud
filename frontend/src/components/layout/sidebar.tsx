@@ -1,25 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { useFileStore } from "@/store/fileStore";
 import { cn } from "@/lib/utils";
 import { filesApi, foldersApi } from "@/lib/api";
 import {
-  FolderOpen,
   Clock,
   Star,
   Settings,
-  HardDrive,
   Home,
-  Share2,
   Trash2,
   ChevronRight,
   ChevronDown,
   Folder,
-  Plus,
+  Image as ImageIcon,
+  PackageCheck,
+  Store,
+  type LucideIcon,
 } from "lucide-react";
 
 interface FolderNode {
@@ -29,11 +28,17 @@ interface FolderNode {
   children: FolderNode[];
 }
 
-const navItems = [
-  { label: "All files", href: "/" },
-  { label: "Recent", href: "/?view=recent" },
-  { label: "Starred", href: "/?view=starred" },
-  { label: "Trash", href: "/?view=trash" },
+const fileNavItems: Array<{ label: string; href: string; icon: LucideIcon }> = [
+  { label: "Files", href: "/", icon: Home },
+  { label: "Photos", href: "/?view=photos", icon: ImageIcon },
+  { label: "Recent", href: "/?view=recent", icon: Clock },
+  { label: "Favorites", href: "/?view=starred", icon: Star },
+  { label: "Trash", href: "/?view=trash", icon: Trash2 },
+];
+
+const appNavItems: Array<{ label: string; href: string; icon: LucideIcon }> = [
+  { label: "Apps", href: "/apps", icon: Store },
+  { label: "Installed Apps", href: "/apps/installed", icon: PackageCheck },
 ];
 
 function formatBytes(bytes: number): string {
@@ -206,29 +211,65 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       >
         {/* Quick Access */}
         <div className="p-4 space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
-          <div className="space-y-1">
-            {navItems.map((item) => {
-              const active = isActive(item.href);
-              return (
-                <button
-                  key={item.label}
-                  onClick={() => handleNavClick(item.href)}
-                  className={cn(
-                    "w-full flex items-center px-3 py-2 rounded-lg text-sm transition-all duration-200",
-                    active
-                      ? "bg-white/[0.04] text-white font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-                      : "text-white/60 hover:text-white hover:bg-white/[0.02]"
-                  )}
-                >
-                  {/* Cyan active dot on left */}
-                  <span className={cn(
-                    "w-1.5 h-1.5 rounded-full mr-2.5 transition-all duration-300",
-                    active ? "bg-cyan-400 glow-cyan scale-100" : "bg-transparent scale-0"
-                  )} />
-                  {item.label}
-                </button>
-              );
-            })}
+          <div className="space-y-5">
+            <div className="space-y-1">
+              <div className="text-[10px] uppercase font-bold tracking-wider text-white/35 mb-2 px-2">
+                Files
+              </div>
+              {fileNavItems.map((item) => {
+                const active = isActive(item.href);
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.label}
+                    onClick={() => handleNavClick(item.href)}
+                    className={cn(
+                      "w-full flex items-center px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                      active
+                        ? "bg-white/[0.04] text-white font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                        : "text-white/60 hover:text-white hover:bg-white/[0.02]"
+                    )}
+                  >
+                    {/* Cyan active dot on left */}
+                    <span className={cn(
+                      "w-1.5 h-1.5 rounded-full mr-2.5 transition-all duration-300",
+                      active ? "bg-cyan-400 glow-cyan scale-100" : "bg-transparent scale-0"
+                    )} />
+                    <Icon className={cn("mr-2 h-3.5 w-3.5", active ? "text-cyan-300" : "text-white/35")} />
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="space-y-1">
+              <div className="text-[10px] uppercase font-bold tracking-wider text-white/35 mb-2 px-2">
+                Apps
+              </div>
+              {appNavItems.map((item) => {
+                const active = isActive(item.href);
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.label}
+                    onClick={() => handleNavClick(item.href)}
+                    className={cn(
+                      "w-full flex items-center px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                      active
+                        ? "bg-white/[0.04] text-white font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                        : "text-white/60 hover:text-white hover:bg-white/[0.02]"
+                    )}
+                  >
+                    <span className={cn(
+                      "w-1.5 h-1.5 rounded-full mr-2.5 transition-all duration-300",
+                      active ? "bg-cyan-400 glow-cyan scale-100" : "bg-transparent scale-0"
+                    )} />
+                    <Icon className={cn("mr-2 h-3.5 w-3.5", active ? "text-cyan-300" : "text-white/35")} />
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Folder Tree */}

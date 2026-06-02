@@ -29,8 +29,41 @@ model User {
   activityLogs  ActivityLog[]
   eventLogs     EventLog[]
   notifications Notification[]
+  installedApps InstalledApp[]
 
   @@map("users")
+}
+
+model InstalledApp {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  slug           String
+  name           String
+  description    String   @default("")
+  icon           String?
+  category       String
+  source         String   @default("docker-hub")
+  status         String   @default("installing")
+  composeProject String   @unique @map("compose_project")
+  composePath    String   @map("compose_path")
+  workspacePath  String   @map("workspace_path")
+  appUrl         String?  @map("app_url")
+  image          String?
+  version        String?
+  ports          String   @default("[]")
+  mounts         String   @default("[]")
+  env            String   @default("{}")
+  metadata       String   @default("{}")
+  lastError      String?  @map("last_error")
+  installedAt    DateTime @default(now()) @map("installed_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([slug])
+  @@index([category])
+  @@map("installed_apps")
 }
 
 model StorageBlob {

@@ -589,6 +589,39 @@ const previewUrl = response.data.data.url;
 videoElement.src = previewUrl;
 ```
 
+## Apps API
+
+All Apps API routes require normal authentication. Docker-changing operations
+also require admin access.
+
+| Method | Route | Purpose |
+| ------ | ----- | ------- |
+| `GET` | `/api/apps/docker/status` | Detect Docker CLI, daemon, Compose v2, runtime mode, and setup guidance. |
+| `GET` | `/api/apps/marketplace?search=nginx&filter=official` | Search Docker Hub live, returning image metadata, trust indicators, confidence, and risk. |
+| `GET` | `/api/apps/marketplace/:namespace/:repository` | Fetch Docker Hub repository details and tags. Official images use `library` as the namespace. |
+| `POST` | `/api/apps/marketplace/analyze` | Admin-only image analysis. Can pull and inspect an image to detect exposed ports, volumes, env, labels, entrypoint, and warnings. |
+| `POST` | `/api/apps/install` | Admin-only Docker Hub install into a managed single-container Compose project. |
+| `GET` | `/api/apps/installed` | List installed apps with live runtime status when Docker is reachable. |
+| `GET` | `/api/apps/installed/:id/logs` | Fetch recent Compose logs for an installed app. |
+| `POST` | `/api/apps/installed/:id/:action` | Admin-only `start`, `stop`, `restart`, `update`, or `remove`. |
+
+Example install payload:
+
+```json
+{
+  "image": "nginx",
+  "tag": "latest",
+  "name": "Nginx",
+  "ports": [{ "hostPort": 8080, "containerPort": 80, "protocol": "tcp" }],
+  "restartPolicy": "unless-stopped"
+}
+```
+
+NexxCloud only treats Docker Hub as the marketplace. It does not fetch curated
+catalogs or hardcoded app templates. Direct NexxCloud folder mounts are stored as
+mapping metadata for the future materialized storage bridge because user folders
+are metadata over `StorageBlob` content, not host directories.
+
 ## Implementation Notes for API Contributors
 
 Before altering an endpoint affecting persisted content:

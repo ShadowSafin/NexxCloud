@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { config } from "../config";
-import { UnauthorizedError } from "../utils/errors";
+import { ForbiddenError, UnauthorizedError } from "../utils/errors";
 import { AuthenticatedRequest, TokenPayload } from "../types";
 import { prisma } from "../db";
 
@@ -42,5 +42,37 @@ export const authenticate = async (
     } else {
       next(error);
     }
+  }
+};
+
+export const requireAdmin = async (
+  req: AuthenticatedRequest,
+  _res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      throw new UnauthorizedError("Authentication required");
+    }
+
+    if (req.user.role === "admin") {
+      next();
+      return;
+    }
+
+    const adminCount = await prisma.user.count({ where: { role: "admin" } });
+    if (adminCount === 0) {
+      const promotedUser = await prisma.user.update({
+        where: { id: req.user.id },
+        data: { role: "admin" },
+      });
+      req.user = promotedUser;
+      next();
+      return;
+    }
+
+    throw new ForbiddenError("Admin access required");
+  } catch (error) {
+    next(error);
   }
 };

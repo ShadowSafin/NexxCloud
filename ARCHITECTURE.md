@@ -161,9 +161,37 @@ The native desktop server packages a different topology for single-machine use:
 | `authService`              | User registration, password hashing, access/refresh JWT issue and refresh-token persistence. |
 | `fileService`              | Create, replace, copy, move, trash, restore, delete, favorites, and file listing logic.      |
 | `folderService`            | Logical folder tree operations and recursive state changes.                                  |
+| `appsService`              | Docker Hub image install state, installed app records, app lifecycle actions, and log access. |
+| `dockerHubService`         | Live Docker Hub search, repository metadata, tags, trust scoring, and risk signals.          |
+| `dockerEngineService`      | Docker CLI/Compose detection, image inspection, Compose generation, container runtime status. |
 | `storageBlobService`       | SHA-256 blob ingestion, reference increments/releases, physical blob deletion.               |
 | `storageAccountingService` | Recalculation, verification, and repair of user storage/trash totals.                        |
 | `storageService`           | Safe paths, directory layout, disk statistics, and storage cache invalidation.               |
+
+## Apps Platform
+
+The Apps surface is intentionally Docker Hub only. NexxCloud does not ship a
+curated app catalog or hardcoded one-click templates. Marketplace data comes from
+Docker Hub search, repository, and tags APIs, then NexxCloud derives confidence
+and risk indicators from official status, available verification signals, pull
+counts, star counts, and update freshness.
+
+Installed apps are persisted in `InstalledApp` rows. Each install creates a
+single-container Docker Compose project under the NexxCloud data directory's
+`apps/` area, pulls and inspects the requested Docker Hub image, writes a
+managed `docker-compose.yml`, and stores ports, app volumes, environment, image
+metadata, and security warnings as serialized metadata. Admin users can start,
+stop, restart, update, remove, and fetch logs from the NexxCloud UI.
+
+Docker control is deliberately admin-only. The first authenticated user is
+promoted to admin when no admin exists, matching the single-owner self-hosted
+setup flow; subsequent users remain normal users unless promoted externally.
+
+Storage mapping has an important boundary: NexxCloud folders are logical database
+records over content-addressed blobs, not host directories containing user-named
+files. The Apps installer stores requested NexxCloud folder mappings as metadata
+for the future materialized storage bridge, while app-owned Docker volumes are
+created under the app workspace and mounted directly.
 | `uploadService`            | Chunk session creation, part acceptance, session completion, resume and cancellation.        |
 | `versionService`           | File snapshots, restoration, version deletion, and retention queueing.                       |
 | `mediaAccessService`       | Short-lived signed tokens for media URLs.                                                    |

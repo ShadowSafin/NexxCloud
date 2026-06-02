@@ -70,6 +70,7 @@ services:
       HOST_HOSTNAME: ${HOST_HOSTNAME:-}
     volumes:
       - ${NEXXCLOUD_DATA_DIR:-${NEWCLOUD_DATA_DIR:-./data}}:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "${BACKEND_BIND_ADDRESS:-0.0.0.0}:${BACKEND_PORT:-4000}:4000"
     networks:

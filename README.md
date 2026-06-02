@@ -100,6 +100,7 @@ NexxCloud sits between a personal NAS and a modern hosted drive:
 | Upload validation         | Every extension, including custom and executable formats, is stored as opaque content; claimed preview formats still receive signature checks and active content is sandboxed on delivery. |
 | Signed media access       | Authenticated clients request five-minute media URLs for preview, thumbnail, and download flows without placing access JWTs in media element URLs.                      |
 | File management           | Nested logical folders, breadcrumb navigation, rename, move, copy, favorites, trash, permanent removal, bulk actions, and versions.                                     |
+| Apps platform             | Authenticated Docker Hub marketplace search, per-image detail pages, admin-only container installs, installed app controls, logs, and Docker Engine detection.          |
 | Sharing                   | Public share tokens support optional password protection and expiration.                                                                                                |
 | Previews                  | Images, video, audio, PDF, and selected text/code content render in the browser; thumbnail generation uses Sharp, FFmpeg, and Poppler.                                  |
 | Integrity maintenance     | Workers repair storage totals, reference counts, blob metadata, legacy attachment state, old chunks, trash retention, and unreferenced blobs.                           |
@@ -126,6 +127,7 @@ not committed to the repository at this time, so documentation does not ship sta
 | Surface                    | What to inspect                                                                                       |
 | -------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Dashboard and file manager | Category shortcuts, grid/list modes, navigation history, sidebar storage meter, and preview workflow. |
+| Apps marketplace           | Docker Hub search, trust indicators, image details, install warning, and installed app dashboard.     |
 | Upload UI                  | Drag-and-drop dialog plus the persistent upload queue with per-file chunk progress and merge state.   |
 | Settings                   | Profile, filesystem storage metrics, LAN access URLs, and QR access helper.                           |
 | Sharing                    | Public file landing page with protected-share prompt and inline preview for supported content.        |
