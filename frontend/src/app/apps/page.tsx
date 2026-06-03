@@ -427,18 +427,18 @@ export default function AppsMarketplacePage() {
             <div className="grid gap-4 md:grid-cols-3">
               <div className="rounded-3xl border border-white/[0.06] bg-white/[0.025] p-5">
                 <ShieldCheck className="h-5 w-5 text-emerald-300" />
-                <h2 className="mt-3 text-sm font-semibold text-white">Official Images</h2>
-                <p className="mt-1 text-xs leading-5 text-white/45">Generated from Docker Hub's live official image namespace.</p>
+                <h2 className="mt-3 text-sm font-semibold text-white">App Images</h2>
+                <p className="mt-1 text-xs leading-5 text-white/45">Filtered to hide runtimes, databases, queues, proxies, and raw infrastructure images.</p>
               </div>
               <div className="rounded-3xl border border-white/[0.06] bg-white/[0.025] p-5">
                 <Download className="h-5 w-5 text-cyan-300" />
-                <h2 className="mt-3 text-sm font-semibold text-white">Popular Images</h2>
+                <h2 className="mt-3 text-sm font-semibold text-white">Popular Apps</h2>
                 <p className="mt-1 text-xs leading-5 text-white/45">Ranked from live pull and star counts returned by Docker Hub.</p>
               </div>
               <div className="rounded-3xl border border-white/[0.06] bg-white/[0.025] p-5">
                 <Sparkles className="h-5 w-5 text-purple-300" />
                 <h2 className="mt-3 text-sm font-semibold text-white">Recently Updated</h2>
-                <p className="mt-1 text-xs leading-5 text-white/45">Fresh official images, refreshed dynamically from Docker Hub.</p>
+                <p className="mt-1 text-xs leading-5 text-white/45">Fresh app-style images, refreshed dynamically from Docker Hub.</p>
               </div>
             </div>
           )}
@@ -450,7 +450,7 @@ export default function AppsMarketplacePage() {
                   {submittedSearch ? "Search Results" : "Docker Hub Marketplace"}
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold text-white">
-                  {submittedSearch ? `Results for "${submittedSearch}"` : "Popular official images"}
+                  {submittedSearch ? `Results for "${submittedSearch}"` : "Popular app images"}
                 </h2>
               </div>
               {loading && <span className="text-xs text-white/40">Loading Docker Hub...</span>}

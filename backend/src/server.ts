@@ -13,6 +13,7 @@ import { prisma } from "./db";
 import { requestLogger } from "./middleware/logger";
 import { errorHandler } from "./middleware/errorHandler";
 import { storageService } from "./services/storageService";
+import { dockerEngineService } from "./services/dockerEngineService";
 import {
   metadataRepairQueue,
   referenceVerificationQueue,
@@ -299,6 +300,17 @@ async function initializeAndListen(): Promise<void> {
     console.log(`Server running on port ${config.port} in ${config.nodeEnv} mode`);
     wsServer.initialize(server!);
     mdnsService.start();
+    if (config.nativeRuntime) {
+      void dockerEngineService.getStatus()
+        .then((status) => {
+          if (status.available) {
+            console.log("Docker Desktop is ready for NexxCloud apps");
+          } else if (status.dockerCli) {
+            console.log("Docker Desktop was requested; waiting for the daemon to become ready");
+          }
+        })
+        .catch((error) => console.warn("Docker Desktop auto-start check failed", error));
+    }
   });
 }
 

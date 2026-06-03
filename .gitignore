@@ -10,6 +10,8 @@ dist/
 out/
 /desktop/release/
 /native/release/
+/native/vendor/docker/*
+!/native/vendor/docker/.gitkeep
 
 # The Capacitor wrapper uses a checked-in shell as its WebView entrypoint.
 !mobile/dist/

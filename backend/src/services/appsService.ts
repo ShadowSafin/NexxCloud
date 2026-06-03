@@ -112,10 +112,7 @@ export class AppsService {
     const tag = safeTag(input.tag);
     const details = await dockerHubService.assertRepositoryExists(input.image);
     const fullImage = imageRef(details.image, tag);
-    const status = await dockerEngineService.getStatus();
-    if (!status.available) {
-      throw new BadRequestError("Docker is not available on this server");
-    }
+    await dockerEngineService.ensureAvailable();
 
     if (input.pull) {
       await dockerEngineService.pullImage(fullImage);
@@ -156,10 +153,7 @@ export class AppsService {
     const tag = safeTag(input.tag);
     const details = await dockerHubService.assertRepositoryExists(input.image);
     const fullImage = imageRef(details.image, tag);
-    const status = await dockerEngineService.getStatus();
-    if (!status.available) {
-      throw new BadRequestError("Docker is not available on this server");
-    }
+    await dockerEngineService.ensureAvailable();
 
     const securityWarnings = dockerEngineService.scanSecurity({
       networkMode: input.networkMode,

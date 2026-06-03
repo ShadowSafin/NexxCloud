@@ -8,6 +8,7 @@
   "scripts": {
     "build:host": "tsc -p tsconfig.json",
     "prepare:runtime": "node scripts/stage-runtime.mjs",
+    "prepare:docker-desktop": "node scripts/prepare-docker-desktop.cjs",
     "dev": "npm run build:host && electron .",
     "dist:windows": "npm run prepare:runtime && npm run build:host && electron-builder --win nsis",
     "dist:linux": "npm run prepare:runtime && npm run build:host && electron-builder --linux AppImage deb rpm",
@@ -30,6 +31,7 @@
     "directories": {
       "output": "release"
     },
+    "beforePack": "scripts/prepare-docker-desktop.cjs",
     "files": [
       "dist/**/*",
       "package.json",
@@ -60,7 +62,14 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "../frontend/public/icon-512.png"
+      "icon": "../frontend/public/icon-512.png",
+      "artifactName": "NexxCloud.Server.Setup.${ext}",
+      "extraResources": [
+        {
+          "from": "vendor/docker/Docker Desktop Installer.exe",
+          "to": "docker/Docker Desktop Installer.exe"
+        }
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -68,7 +77,8 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "runAfterFinish": true,
-      "deleteAppDataOnUninstall": false
+      "deleteAppDataOnUninstall": false,
+      "include": "installer/docker-bootstrap.nsh"
     },
     "linux": {
       "target": [

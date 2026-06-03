@@ -1,4 +1,4 @@
-import { execFile } from "child_process";
+import { execFile, spawn } from "child_process";
 import crypto from "crypto";
 import fs from "fs/promises";
 import net from "net";
@@ -14,6 +14,10 @@ const DOCKER_TIMEOUT_MS = 120_000;
 const DOCKER_PULL_TIMEOUT_MS = 15 * 60_000;
 const LOG_TAIL_LINES = 500;
 const PREFERRED_WEB_PORTS = [80, 443, 3000, 5000, 8000, 8080, 8096, 9000];
+const DOCKER_EXECUTABLE = process.platform === "win32" ? "docker.exe" : "docker";
+const DOCKER_DESKTOP_START_COOLDOWN_MS = 30_000;
+const DOCKER_DESKTOP_READY_TIMEOUT_MS = 120_000;
+const DOCKER_DESKTOP_POLL_MS = 2_000;
 
 export interface DockerStatus {
   available: boolean;
@@ -143,7 +147,12 @@ const parseJsonLines = <T>(value: string): T[] => {
   }
 };
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export class DockerEngineService {
+  private dockerExecutable: string | null = null;
+  private lastDockerDesktopStartAt = 0;
+
   getAppsRoot() {
     const dataRoot = path.resolve(config.storageRoot, "..");
     return path.join(dataRoot, "apps");
@@ -155,7 +164,9 @@ export class DockerEngineService {
 
   async getStatus(): Promise<DockerStatus> {
     const guidance = [
-      "Install Docker Desktop or Docker Engine on the NexxCloud server.",
+      config.nativeRuntime && process.platform === "win32"
+        ? "NexxCloud can start Docker Desktop automatically after the bundled installer finishes."
+        : "Install Docker Desktop or Docker Engine on the NexxCloud server.",
       "Make sure the Docker daemon is running before installing apps.",
       "If NexxCloud runs in Docker, mount the host Docker socket only if you understand the security risk.",
     ];
@@ -177,6 +188,11 @@ export class DockerEngineService {
 
     const dockerInfo = await this.tryDocker(["info", "--format", "{{json .}}"]);
     const composeVersion = await this.tryDocker(["compose", "version", "--short"]);
+    let startedDockerDesktop = false;
+
+    if (!dockerInfo.ok && config.nativeRuntime && process.platform === "win32") {
+      startedDockerDesktop = await this.startDockerDesktop();
+    }
 
     return {
       available: dockerInfo.ok && composeVersion.ok,
@@ -186,9 +202,30 @@ export class DockerEngineService {
       dockerVersion: dockerVersion.stdout.trim() || null,
       composeVersion: composeVersion.stdout.trim() || null,
       mode: config.nativeRuntime ? "native" : "container",
-      guidance,
+      guidance: startedDockerDesktop
+        ? ["Docker Desktop was started automatically. Docker apps will become available once the daemon is ready.", ...guidance]
+        : guidance,
       error: dockerInfo.ok ? undefined : dockerInfo.error,
     };
+  }
+
+  async ensureAvailable(timeoutMs = DOCKER_DESKTOP_READY_TIMEOUT_MS): Promise<DockerStatus> {
+    const startedAt = Date.now();
+    let status = await this.getStatus();
+
+    if (status.available) return status;
+    if (!status.dockerCli) {
+      throw new BadRequestError("Docker Desktop is not installed or the Docker CLI could not be found");
+    }
+
+    while (Date.now() - startedAt < timeoutMs) {
+      await delay(DOCKER_DESKTOP_POLL_MS);
+      status = await this.getStatus();
+      if (status.available) return status;
+    }
+
+    const reason = status.error ? `: ${status.error}` : "";
+    throw new BadRequestError(`Docker Desktop was started, but the Docker daemon is not ready yet${reason}`);
   }
 
   async pullImage(image: string) {
@@ -588,16 +625,119 @@ export class DockerEngineService {
   }
 
   private async runDocker(args: string[], options?: { timeout?: number }) {
+    const executable = await this.resolveDockerExecutable();
+    const env = { ...process.env };
+    if (executable !== DOCKER_EXECUTABLE) {
+      env.PATH = `${path.dirname(executable)}${path.delimiter}${env.PATH || ""}`;
+    }
+
     try {
-      return await execFileAsync("docker", args, {
+      return await execFileAsync(executable, args, {
         timeout: options?.timeout || DOCKER_TIMEOUT_MS,
         maxBuffer: 1024 * 1024 * 20,
+        env,
         windowsHide: true,
       });
     } catch (error: any) {
       const stderr = error?.stderr ? String(error.stderr).trim() : "";
       const stdout = error?.stdout ? String(error.stdout).trim() : "";
       throw new BadRequestError(stderr || stdout || error?.message || "Docker command failed");
+    }
+  }
+
+  private async resolveDockerExecutable() {
+    if (this.dockerExecutable && await this.fileExists(this.dockerExecutable)) {
+      return this.dockerExecutable;
+    }
+
+    for (const candidate of this.dockerExecutableCandidates()) {
+      if (candidate && await this.fileExists(candidate)) {
+        this.dockerExecutable = candidate;
+        return candidate;
+      }
+    }
+
+    return DOCKER_EXECUTABLE;
+  }
+
+  private dockerExecutableCandidates() {
+    const candidates = [process.env.DOCKER_CLI_PATH || ""];
+
+    if (process.platform === "win32") {
+      const localAppData = process.env.LOCALAPPDATA || "";
+      const programFiles = process.env.ProgramFiles || process.env.PROGRAMFILES || "";
+      const programFilesX86 = process.env["ProgramFiles(x86)"] || process.env["PROGRAMFILES(X86)"] || "";
+
+      candidates.push(
+        path.join(localAppData, "Programs", "DockerDesktop", "resources", "bin", "docker.exe"),
+        path.join(localAppData, "Programs", "Docker", "Docker", "resources", "bin", "docker.exe"),
+        path.join(programFiles, "Docker", "Docker", "resources", "bin", "docker.exe"),
+        path.join(programFilesX86, "Docker", "Docker", "resources", "bin", "docker.exe")
+      );
+    } else {
+      candidates.push("/usr/local/bin/docker", "/usr/bin/docker", "/snap/bin/docker");
+    }
+
+    return [...new Set(candidates.filter(Boolean))];
+  }
+
+  private async startDockerDesktop() {
+    if (!config.nativeRuntime || process.platform !== "win32") return false;
+
+    const now = Date.now();
+    if (now - this.lastDockerDesktopStartAt < DOCKER_DESKTOP_START_COOLDOWN_MS) {
+      return false;
+    }
+
+    const executable = await this.resolveDockerDesktopExecutable();
+    if (!executable) return false;
+
+    try {
+      const child = spawn(executable, [], {
+        detached: true,
+        stdio: "ignore",
+        windowsHide: true,
+      });
+      child.unref();
+      this.lastDockerDesktopStartAt = now;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  private async resolveDockerDesktopExecutable() {
+    for (const candidate of this.dockerDesktopExecutableCandidates()) {
+      if (candidate && await this.fileExists(candidate)) {
+        return candidate;
+      }
+    }
+    return null;
+  }
+
+  private dockerDesktopExecutableCandidates() {
+    if (process.platform !== "win32") return [];
+
+    const localAppData = process.env.LOCALAPPDATA || "";
+    const programFiles = process.env.ProgramFiles || process.env.PROGRAMFILES || "";
+    const programW6432 = process.env.ProgramW6432 || process.env.PROGRAMW6432 || "";
+    const programFilesX86 = process.env["ProgramFiles(x86)"] || process.env["PROGRAMFILES(X86)"] || "";
+
+    return [...new Set([
+      path.join(localAppData, "Programs", "DockerDesktop", "Docker Desktop.exe"),
+      path.join(localAppData, "Programs", "Docker", "Docker", "Docker Desktop.exe"),
+      path.join(programFiles, "Docker", "Docker", "Docker Desktop.exe"),
+      path.join(programW6432, "Docker", "Docker", "Docker Desktop.exe"),
+      path.join(programFilesX86, "Docker", "Docker", "Docker Desktop.exe"),
+    ].filter(Boolean))];
+  }
+
+  private async fileExists(filePath: string) {
+    try {
+      await fs.access(filePath);
+      return true;
+    } catch {
+      return false;
     }
   }
 }

@@ -109,6 +109,186 @@ const normalizeRepositoryName = (value: string) => {
   throw new BadRequestError("Only Docker Hub namespace/repository images are supported");
 };
 
+const NON_APP_IMAGE_BLOCK_MESSAGE =
+  "This Docker image is hidden because it is a runtime, base OS, database, queue, proxy, or raw infrastructure component rather than a one-click NexxCloud app.";
+
+const DEVELOPER_RUNTIME_REPOSITORIES = new Set([
+  "almalinux",
+  "alpine",
+  "amazonlinux",
+  "amazoncorretto",
+  "archlinux",
+  "bash",
+  "buildpack-deps",
+  "busybox",
+  "centos",
+  "clearlinux",
+  "clojure",
+  "composer",
+  "dart",
+  "debian",
+  "deno",
+  "dotnet",
+  "eclipse-temurin",
+  "elixir",
+  "erlang",
+  "fedora",
+  "gcc",
+  "golang",
+  "gradle",
+  "groovy",
+  "haskell",
+  "java",
+  "jdk",
+  "jre",
+  "jruby",
+  "julia",
+  "maven",
+  "mono",
+  "node",
+  "openjdk",
+  "opensuse",
+  "oraclelinux",
+  "perl",
+  "php",
+  "pypy",
+  "python",
+  "r-base",
+  "rockylinux",
+  "ruby",
+  "rust",
+  "sapmachine",
+  "swift",
+  "ubuntu",
+]);
+
+const DEVELOPER_RUNTIME_IMAGE_KEYS = new Set([
+  "library/docker",
+]);
+
+const RAW_INFRASTRUCTURE_REPOSITORIES = new Set([
+  "adminer",
+  "aerospike",
+  "arangodb",
+  "cassandra",
+  "chronograf",
+  "consul",
+  "couchbase",
+  "couchdb",
+  "eclipse-mosquitto",
+  "elasticsearch",
+  "etcd",
+  "haproxy",
+  "hello-world",
+  "httpd",
+  "influxdb",
+  "kapacitor",
+  "kibana",
+  "kong",
+  "logstash",
+  "mariadb",
+  "memcached",
+  "mongo",
+  "mongodb",
+  "mysql",
+  "nats",
+  "neo4j",
+  "nginx",
+  "postgres",
+  "postgresql",
+  "rabbitmq",
+  "redpanda",
+  "redis",
+  "registry",
+  "rethinkdb",
+  "solr",
+  "sonarqube",
+  "telegraf",
+  "traefik",
+  "varnish",
+  "vault",
+  "zookeeper",
+  "caddy",
+  "flink",
+  "percona",
+  "phpmyadmin",
+  "tomcat",
+]);
+
+const RAW_INFRASTRUCTURE_NAMESPACES = new Set([
+  "caddy",
+  "elastic",
+  "haproxy",
+  "kong",
+  "mariadb",
+  "mongo",
+  "mongodb",
+  "mysql",
+  "nginx",
+  "percona",
+  "postgres",
+  "rabbitmq",
+  "redis",
+  "traefik",
+]);
+
+const RAW_INFRASTRUCTURE_TERMS = [
+  "caddy",
+  "cassandra",
+  "couchdb",
+  "elastic",
+  "elasticsearch",
+  "etcd",
+  "flink",
+  "haproxy",
+  "httpd",
+  "influxdb",
+  "ingress",
+  "kafka",
+  "kong",
+  "mariadb",
+  "maxscale",
+  "memcached",
+  "mongo",
+  "mongodb",
+  "mysql",
+  "nginx",
+  "operator",
+  "percona",
+  "postgres",
+  "prometheus-exporter",
+  "rabbitmq",
+  "redis",
+  "solr",
+  "telegraf",
+  "tomcat",
+  "traefik",
+  "varnish",
+  "zookeeper",
+];
+
+const hasBlockedInfrastructureTerm = (repository: string) =>
+  RAW_INFRASTRUCTURE_TERMS.some((term) => {
+    if (repository === term) return true;
+    return (
+      repository.startsWith(`${term}-`) ||
+      repository.endsWith(`-${term}`) ||
+      repository.includes(`-${term}-`)
+    );
+  });
+
+const isFilteredMarketplaceImage = (namespace: string, repository: string) => {
+  const normalizedNamespace = namespace.toLowerCase();
+  const normalizedRepository = repository.toLowerCase();
+  return (
+    DEVELOPER_RUNTIME_REPOSITORIES.has(normalizedRepository) ||
+    RAW_INFRASTRUCTURE_REPOSITORIES.has(normalizedRepository) ||
+    RAW_INFRASTRUCTURE_NAMESPACES.has(normalizedNamespace) ||
+    hasBlockedInfrastructureTerm(normalizedRepository) ||
+    DEVELOPER_RUNTIME_IMAGE_KEYS.has(`${normalizedNamespace}/${normalizedRepository}`)
+  );
+};
+
 const parseRepositoryFromSearchResult = (result: DockerHubSearchResult) =>
   normalizeRepositoryName(result.repo_name);
 
@@ -443,7 +623,7 @@ export class DockerHubService {
     url.searchParams.set("page_size", String(pageSize));
 
     const payload = await jsonRequest<DockerHubListResponse<DockerHubSearchResult>>(url.toString());
-    let results = payload.results.map((item) => this.fromSearchResult(item));
+    let results = this.filterInstallableImages(payload.results.map((item) => this.fromSearchResult(item)));
 
     if (params.filter === "official") {
       results = results.filter((item) => item.official);
@@ -461,7 +641,7 @@ export class DockerHubService {
     results = await this.enrichImages(results, 18);
 
     return {
-      count: payload.count,
+      count: results.length,
       next: payload.next,
       previous: payload.previous,
       results,
@@ -469,7 +649,7 @@ export class DockerHubService {
   }
 
   async home() {
-    const official = await this.officialRepositories(48);
+    const official = await this.officialRepositories(100);
     const sortedByPulls = [...official].sort((a, b) => b.pullCount - a.pullCount);
     const sortedByUpdated = [...official].sort((a, b) => {
       const aTime = a.lastUpdated ? new Date(a.lastUpdated).getTime() : 0;
@@ -504,11 +684,15 @@ export class DockerHubService {
       `${DOCKER_HUB_BASE_URL}/repositories/${encodeURIComponent(namespace)}/${encodeURIComponent(repository)}/`
     );
 
+    const image = this.fromRepository(detail);
+    if (isFilteredMarketplaceImage(image.namespace, image.repository)) {
+      throw new BadRequestError(NON_APP_IMAGE_BLOCK_MESSAGE);
+    }
+
     const tagPayload = await jsonRequest<DockerHubListResponse<DockerHubTag>>(
       `${DOCKER_HUB_BASE_URL}/repositories/${encodeURIComponent(namespace)}/${encodeURIComponent(repository)}/tags?page_size=25&ordering=last_updated`
     );
 
-    const image = this.fromRepository(detail);
     const tags = tagPayload.results.map((tag) => ({
       name: tag.name,
       lastUpdated: tag.last_updated || null,
@@ -544,7 +728,7 @@ export class DockerHubService {
   private async officialRepositories(pageSize: number) {
     const url = `${DOCKER_HUB_BASE_URL}/repositories/library/?page_size=${Math.min(pageSize, 100)}&ordering=last_updated`;
     const payload = await jsonRequest<DockerHubListResponse<DockerHubRepository>>(url);
-    return payload.results.map((item) => this.fromRepository(item));
+    return this.filterInstallableImages(payload.results.map((item) => this.fromRepository(item)));
   }
 
   private async enrichImages(images: MarketplaceImage[], maxItems: number) {
@@ -562,7 +746,11 @@ export class DockerHubService {
       })
     );
 
-    return [...enriched, ...tail];
+    return this.filterInstallableImages([...enriched, ...tail]);
+  }
+
+  private filterInstallableImages(images: MarketplaceImage[]) {
+    return images.filter((image) => !isFilteredMarketplaceImage(image.namespace, image.repository));
   }
 
   private repositoryDetails(namespace: string, repository: string) {
