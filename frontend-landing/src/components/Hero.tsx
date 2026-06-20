@@ -3,6 +3,7 @@
 import { ArrowDown, Monitor, Server } from "lucide-react";
 import HeroDeployCommand from "./HeroDeployCommand";
 import DashboardMockup from "./DashboardMockup";
+import DeploymentTerminal from "./DeploymentTerminal";
 
 export default function Hero() {
   return (
@@ -75,7 +76,7 @@ export default function Hero() {
 
           {/* Quick-start CLI block inline */}
           <div className="w-full max-w-lg">
-            <HeroDeployCommand />
+            <DeploymentTerminal />
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import { BookOpen, Cpu, ShieldCheck } from "lucide-react";
-import DeploymentTerminal from "./DeploymentTerminal";
+import { BookOpen, Cpu, ShieldCheck, Monitor, Server, HardDrive, ArrowRight, ArrowDown } from "lucide-react";
+import HeroDeployCommand from "./HeroDeployCommand";
 
 export default function SelfHosting() {
   return (
@@ -15,7 +15,7 @@ export default function SelfHosting() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative">
           
           {/* Typography and Content with Outline Background */}
-          <div className="lg:col-span-12 flex flex-col items-start text-left relative py-12">
+          <div className="lg:col-span-6 flex flex-col items-start text-left relative py-12">
             {/* Outline background text "ABOUT" */}
             <div className="absolute right-0 top-1/2 -translate-y-1/2 select-none text-[100px] sm:text-[140px] md:text-[180px] font-display font-extrabold uppercase tracking-[0.15em] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.03)] z-0 pointer-events-none">
               ABOUT
@@ -50,6 +50,13 @@ export default function SelfHosting() {
               </a>
             </div>
           </div>
+          
+          {/* Futuristic Monochrome Data Core Graphic */}
+          <div className="lg:col-span-6 relative flex justify-center items-center pointer-events-none hidden lg:flex">
+             {/* Fade edges into the black background */}
+             <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_100px_40px_black] z-10" />
+             <img src="/about-blackhole.jpg" alt="Black Hole" className="w-full h-auto max-w-[500px] object-cover rounded-2xl opacity-80 mix-blend-screen" />
+          </div>
         </div>
 
         {/* ================= PART 2: ORIGINAL DEPLOYMENT WORKSPACE ================= */}
@@ -77,44 +84,61 @@ export default function SelfHosting() {
                 <span>Data flow topology</span>
               </div>
               
-              <svg viewBox="0 0 400 180" className="w-full h-auto text-zinc-300">
-                {/* Clients Block */}
-                <rect x="10" y="65" width="80" height="40" rx="6" fill="#0c0c0e" stroke="#1f1f23" strokeWidth="1" />
-                <text x="50" y="89" fill="#f4f4f5" fontSize="10" textAnchor="middle" fontWeight="600">Client Apps</text>
-                <text x="50" y="99" fill="#ec4899" fontSize="8" textAnchor="middle" fontFamily="monospace">WebView/Win</text>
-
-                {/* Arrow 1 */}
-                <line x1="90" y1="85" x2="135" y2="85" stroke="#1f1f23" strokeWidth="1.5" strokeDasharray="3" />
-                <polygon points="135,82 142,85 135,88" fill="#1f1f23" />
+              <div className="flex flex-col md:flex-row items-center gap-3 w-full py-2">
                 
-                {/* Backend API Container */}
-                <rect x="145" y="45" width="90" height="80" rx="6" fill="#0c0c0e" stroke="#a855f7" strokeWidth="1.5" />
-                <text x="190" y="65" fill="#f4f4f5" fontSize="10" textAnchor="middle" fontWeight="600">API Gateway</text>
-                <text x="190" y="78" fill="#c084fc" fontSize="8" textAnchor="middle" fontFamily="monospace">Port 4000</text>
-                
-                {/* Database & Redis indicators inside Backend */}
-                <line x1="155" y1="90" x2="225" y2="90" stroke="#1f1f23" />
-                <text x="190" y="103" fill="#9ca3af" fontSize="8" textAnchor="middle" fontFamily="monospace">PostgreSQL / Redis</text>
-                <text x="190" y="114" fill="#a855f7" fontSize="7" textAnchor="middle">Signed media access</text>
+                {/* Client Node */}
+                <div className="w-full md:w-1/4 bg-white/[0.02] border border-white/10 rounded-xl p-4 flex flex-col items-center text-center transition-all hover:bg-white/[0.04]">
+                  <Monitor className="w-5 h-5 text-zinc-400 mb-2" />
+                  <span className="text-xs font-semibold text-zinc-200">Client Apps</span>
+                  <span className="text-[9px] font-mono text-zinc-500 mt-1">WebView / Win</span>
+                </div>
 
-                {/* Arrow 2 */}
-                <line x1="235" y1="85" x2="285" y2="85" stroke="#1f1f23" strokeWidth="1.5" strokeDasharray="3" />
-                <polygon points="285,82 292,85 285,88" fill="#1f1f23" />
+                {/* Connecting Arrow */}
+                <div className="hidden md:flex flex-col items-center">
+                  <ArrowRight className="w-4 h-4 text-zinc-600" />
+                </div>
+                <div className="md:hidden flex flex-col items-center my-1">
+                  <ArrowDown className="w-4 h-4 text-zinc-600" />
+                </div>
 
-                {/* Worker Container */}
-                <rect x="295" y="25" width="95" height="50" rx="6" fill="#0c0c0e" stroke="#1f1f23" strokeWidth="1" />
-                <text x="342" y="46" fill="#f4f4f5" fontSize="9" textAnchor="middle" fontWeight="600">Background Worker</text>
-                <text x="342" y="58" fill="#9ca3af" fontSize="7" textAnchor="middle" fontFamily="monospace">Thumbnails / Apps / Integrity</text>
+                {/* API Gateway Node */}
+                <div className="w-full md:w-2/5 bg-white/[0.05] border border-white/20 rounded-xl p-4 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.03)] transition-all hover:bg-white/[0.08] hover:border-white/30">
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+                  <Server className="w-6 h-6 text-white mb-2" />
+                  <span className="text-sm font-semibold text-white">API Gateway</span>
+                  <span className="text-[10px] font-mono text-zinc-400 mt-1 mb-3">Port 4000</span>
+                  
+                  <div className="w-full h-px bg-white/10 my-2" />
+                  
+                  <span className="text-[10px] font-mono text-zinc-500">PostgreSQL / Redis</span>
+                  <span className="text-[8px] text-zinc-600 uppercase tracking-widest mt-1">Signed Media Access</span>
+                </div>
 
-                {/* Storage Mounted Container */}
-                <rect x="295" y="95" width="95" height="55" rx="6" fill="#0c0c0e" stroke="#1f1f23" strokeWidth="1" />
-                <text x="342" y="117" fill="#f4f4f5" fontSize="9" textAnchor="middle" fontWeight="600">Storage Volume</text>
-                <text x="342" y="129" fill="#ec4899" fontSize="7" textAnchor="middle" fontFamily="monospace">/app/data (Mounted)</text>
-                <text x="342" y="139" fill="#9ca3af" fontSize="7" textAnchor="middle">Content-Addressed Blobs</text>
+                {/* Connecting Arrow */}
+                <div className="hidden md:flex flex-col items-center">
+                  <ArrowRight className="w-4 h-4 text-zinc-600" />
+                </div>
+                <div className="md:hidden flex flex-col items-center my-1">
+                  <ArrowDown className="w-4 h-4 text-zinc-600" />
+                </div>
 
-                {/* Worker connection line */}
-                <path d="M 235,65 Q 265,65 295,50" fill="none" stroke="#1f1f23" strokeWidth="1" />
-              </svg>
+                {/* Workers & Storage Nodes */}
+                <div className="w-full md:w-1/3 flex flex-col gap-3">
+                  <div className="bg-white/[0.02] border border-white/10 rounded-xl p-3 flex flex-col items-center text-center transition-all hover:bg-white/[0.04]">
+                    <Cpu className="w-4 h-4 text-zinc-400 mb-1" />
+                    <span className="text-[11px] font-semibold text-zinc-200">Background Worker</span>
+                    <span className="text-[8px] font-mono text-zinc-500 mt-1">Thumbnails / Integrity</span>
+                  </div>
+                  
+                  <div className="bg-white/[0.02] border border-white/10 rounded-xl p-3 flex flex-col items-center text-center transition-all hover:bg-white/[0.04]">
+                    <HardDrive className="w-4 h-4 text-zinc-400 mb-1" />
+                    <span className="text-[11px] font-semibold text-zinc-200">Storage Volume</span>
+                    <span className="text-[8px] font-mono text-zinc-500 mt-1">/app/data (Mounted)</span>
+                    <span className="text-[8px] text-zinc-600 uppercase tracking-widest mt-1">Blobs</span>
+                  </div>
+                </div>
+
+              </div>
             </div>
 
             <div className="flex items-center gap-3 text-xs text-zinc-500 font-mono mt-2">
@@ -123,7 +147,9 @@ export default function SelfHosting() {
             </div>
           </div>
 
-          <DeploymentTerminal />
+            <div className="lg:col-span-7 flex flex-col items-center">
+              <HeroDeployCommand />
+            </div>
         </div>
       </div>
     </section>
