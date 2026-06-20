@@ -37,13 +37,13 @@ export default function Features() {
       title: "Docker Hub Apps",
       description: "Search Docker Hub, inspect metadata, install images, and manage Compose-backed apps from NexxCloud.",
       icon: Container,
-      accent: "text-cyan-400 bg-cyan-500/10",
+      accent: "text-zinc-200 bg-zinc-300/10",
     },
     {
       title: "Realtime App Stats",
       description: "Installed apps show CPU, memory, network, disk I/O, container status, exposed ports, and live logs.",
       icon: Activity,
-      accent: "text-purple-400 bg-purple-500/10",
+      accent: "text-zinc-400 bg-zinc-500/10",
     },
     {
       title: "LAN Access URLs",

@@ -1,9 +1,22 @@
 import type { Metadata, Viewport } from "next";
+import { Space_Grotesk, Outfit } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { repositoryUrl, siteConfig, siteUrl } from "@/lib/site";
 import "./globals.css";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-header",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -64,7 +77,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark h-full">
+    <html lang="en" className={`dark h-full ${spaceGrotesk.variable} ${outfit.variable}`}>
       <head>
         <meta name="monetag" content="dc6b37311e7a62779a22b592cabd7aaa" />
         <Script id="google-tag-manager" strategy="beforeInteractive">
@@ -78,7 +91,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className="font-sans h-full bg-[#030303] text-[#F4F4F5] antialiased selection:bg-brand-cyan/20 selection:text-brand-cyan"
+        className="font-sans h-full bg-black text-[#F4F4F5] antialiased selection:bg-brand-cyan/20 selection:text-brand-cyan"
       >
         <noscript>
           <iframe

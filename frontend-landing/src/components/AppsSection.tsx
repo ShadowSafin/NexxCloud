@@ -89,7 +89,7 @@ export default function AppsSection() {
                 href={`${releaseDownloadUrl}/NexxCloud.Desktop.Setup.exe`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl bg-brand-cyan px-5 py-2.5 text-[13px] font-medium text-zinc-950 transition-all hover:bg-cyan-400"
+                className="flex items-center gap-2 rounded-xl bg-brand-cyan px-5 py-2.5 text-[13px] font-medium text-zinc-950 transition-all hover:bg-zinc-200 hover:text-black"
               >
                 <Download className="h-4 w-4" />
                 <span>Desktop Client</span>
@@ -99,7 +99,7 @@ export default function AppsSection() {
                 href={`${releaseDownloadUrl}/NexxCloud.Server.Setup.exe`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl bg-brand-cyan px-5 py-2.5 text-[13px] font-medium text-zinc-950 transition-all hover:bg-cyan-400"
+                className="flex items-center gap-2 rounded-xl bg-brand-cyan px-5 py-2.5 text-[13px] font-medium text-zinc-950 transition-all hover:bg-zinc-200 hover:text-black"
               >
                 <Download className="h-4 w-4" />
                 <span>Desktop Server</span>
@@ -178,7 +178,7 @@ export default function AppsSection() {
                 href={`${releaseDownloadUrl}/NexxCloud-release.apk`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl bg-brand-purple px-5 py-2.5 text-[13px] font-medium text-white transition-all hover:bg-violet-500"
+                className="flex items-center gap-2 rounded-xl bg-brand-purple px-5 py-2.5 text-[13px] font-medium text-white transition-all hover:bg-zinc-500"
               >
                 <Download className="h-4 w-4" />
                 <span>Download APK</span>

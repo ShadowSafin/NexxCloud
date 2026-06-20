@@ -1,18 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #030303;
+  --background: #000000;
   --foreground: #f4f4f5;
 }
 
 @theme {
-  --color-background: #030303;
+  --color-background: #000000;
   --color-foreground: #f4f4f5;
-  --color-brand-cyan: #06b6d4;
-  --color-brand-purple: #8b5cf6;
-  --color-graphite-light: #27272a;
-  --color-graphite-dark: #09090b;
-  --color-graphite-med: #18181b;
+  --color-brand-cyan: #ffffff; /* Remapped to White/Silver */
+  --color-brand-purple: #71717a; /* Remapped to Zinc/Gray */
+  --color-graphite-light: #1f1f23;
+  --color-graphite-dark: #000000;
+  --color-graphite-med: #0a0a0c;
+  
+  --font-sans: var(--font-body), sans-serif;
+  --font-display: var(--font-header), sans-serif;
   
   --animate-ambient-glow: ambient-glow 15s ease infinite alternate;
   --animate-border-glow: border-glow 8s linear infinite;
@@ -20,24 +23,24 @@
   @keyframes ambient-glow {
     0% {
       transform: translate(-10%, -10%) scale(1);
-      opacity: 0.15;
+      opacity: 0.12;
     }
     50% {
-      transform: translate(10%, 10%) scale(1.2);
-      opacity: 0.3;
+      transform: translate(10%, 10%) scale(1.15);
+      opacity: 0.25;
     }
     100% {
       transform: translate(-10%, 10%) scale(0.9);
-      opacity: 0.15;
+      opacity: 0.12;
     }
   }
 
   @keyframes border-glow {
     0%, 100% {
-      border-color: rgba(6, 182, 212, 0.15);
+      border-color: rgba(255, 255, 255, 0.15);
     }
     50% {
-      border-color: rgba(139, 92, 246, 0.15);
+      border-color: rgba(161, 161, 170, 0.15);
     }
   }
 }
@@ -45,11 +48,11 @@
 /* Base resets and visual system */
 html {
   scroll-behavior: smooth;
-  background-color: #030303;
+  background-color: #000000;
 }
 
 body {
-  background: #030303;
+  background: #000000;
   color: #f4f4f5;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
@@ -63,48 +66,48 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #030303;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #18181b;
+  background: #0a0a0c;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #27272a;
+  background: #1f1f23;
 }
 
 /* Glassmorphism system */
 .glass {
-  background: rgba(10, 10, 12, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(8, 8, 10, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .glass-accent {
-  background: rgba(24, 24, 27, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 15, 18, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .glass-card {
-  background: rgba(15, 15, 18, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  background: rgba(8, 8, 10, 0.45);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.9);
 }
 
 /* Premium radial lighting effects */
 .radial-spotlight {
-  background: radial-gradient(circle 800px at 50% 0%, rgba(6, 182, 212, 0.06), transparent 80%);
+  background: radial-gradient(circle 800px at 50% 0%, rgba(161, 161, 170, 0.04), transparent 80%);
 }
 
 .radial-bg {
-  background: radial-gradient(circle at 50% -100px, rgba(139, 92, 246, 0.12), rgba(6, 182, 212, 0.03), transparent 70%);
+  background: radial-gradient(circle at 50% -100px, rgba(161, 161, 170, 0.12), rgba(255, 255, 255, 0.03), transparent 70%);
 }
 
 .hero-video-layer {

@@ -90,71 +90,60 @@ export default function Navbar() {
         <GlassEffect
           enabled={scrolled}
           className={scrolled ? "rounded-full border border-white/10" : ""}
-          contentClassName={scrolled ? "py-3 px-4 md:px-8" : "py-6 px-6 md:px-12"}
+          contentClassName={scrolled ? "py-2 px-3 md:px-6" : "py-4 px-6 md:px-12"}
         >
           <div className="flex items-center justify-between">
-          <a
-            href="#"
-            className="flex items-center gap-2 group text-foreground font-semibold text-lg tracking-tight transition-opacity"
-            id="nav-logo"
-          >
-            <div className="w-8 h-8 overflow-hidden rounded-lg border border-white/10 shadow-lg shadow-brand-purple/10 group-hover:scale-105 transition-transform duration-300">
-              <span aria-hidden="true" className="block h-full w-full bg-[url('/icon.png')] bg-cover" />
+            <a
+              href="#"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-black/40 text-foreground font-display font-bold text-[11px] uppercase tracking-[0.2em] transition-all hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.15)]"
+              id="nav-logo"
+            >
+              <span className="w-2 h-2 rounded-full bg-brand-cyan animate-pulse shadow-[0_0_8px_#ffffff]" />
+              <span>NexxCloud</span>
+            </a>
+
+            <div className="hidden md:flex items-center gap-1 bg-white/[0.02] px-1 py-0.5 rounded-full border border-white/5 backdrop-blur-md">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target={link.isExternal ? "_blank" : undefined}
+                  rel={link.isExternal ? "noopener noreferrer" : undefined}
+                  className="px-4 py-1.5 rounded-full text-[11px] font-display font-semibold uppercase tracking-wider text-zinc-400 hover:text-white transition-all duration-300 hover:bg-white/[0.04] flex items-center gap-1 group/item"
+                >
+                  {link.name}
+                  {link.isExternal && (
+                    <ArrowUpRight className="w-3 h-3 opacity-40 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 transition-all" />
+                  )}
+                </a>
+              ))}
             </div>
-            <span className="font-medium tracking-tight">
-              Nexx<span className="text-zinc-400 font-normal">Cloud</span>
-            </span>
-          </a>
 
-          <div className="hidden md:flex items-center gap-1 bg-zinc-950/20 px-1 py-1 rounded-full border border-white/5">
-            {navLinks.map((link) => (
+            <div className="hidden md:flex items-center gap-3">
               <a
-                key={link.name}
-                href={link.href}
-                target={link.isExternal ? "_blank" : undefined}
-                rel={link.isExternal ? "noopener noreferrer" : undefined}
-                className="px-4 py-1.5 rounded-full text-[13px] font-medium text-zinc-400 hover:text-foreground transition-all duration-300 hover:bg-white/5 flex items-center gap-1 group/item"
+                href="#self-hosting"
+                className="inline-flex items-center p-0.5 pl-4 pr-1 rounded-full bg-white/[0.03] border border-white/10 hover:border-white/20 transition-all hover:bg-white/[0.06] group text-[11px] font-display font-semibold uppercase tracking-wider text-zinc-300 hover:text-white"
+                id="btn-nav-host"
               >
-                {link.name}
-                {link.isExternal && (
-                  <ArrowUpRight className="w-3 h-3 opacity-40 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 transition-all" />
-                )}
+                <span>Deploy Server</span>
+                <span className="ml-3 flex items-center justify-center w-6 h-6 rounded-full bg-white text-black transition-transform group-hover:translate-x-0.5">
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </span>
               </a>
-            ))}
-          </div>
+            </div>
 
-          <div className="hidden md:flex items-center gap-3">
-            <a
-              href="https://github.com/ShadowSafin/NexxCloud"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/5 hover:border-white/15 text-[13px] font-medium text-zinc-300 hover:text-foreground transition-all bg-white/5 hover:bg-white/10"
-              id="btn-nav-github"
+            <button
+              ref={menuButtonRef}
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-2 text-zinc-400 hover:text-foreground hover:bg-white/5 rounded-lg transition-all"
+              aria-label="Open menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+              id="btn-mobile-menu-open"
             >
-              <GithubIcon className="w-4 h-4" />
-              <span>GitHub</span>
-            </a>
-            <a
-              href="#self-hosting"
-              className="px-4 py-2 rounded-full bg-foreground hover:bg-zinc-200 text-background text-[13px] font-semibold transition-all shadow-md hover:shadow-lg shadow-white/5 active:scale-95"
-              id="btn-nav-host"
-            >
-              Deploy
-            </a>
-          </div>
-
-          <button
-            ref={menuButtonRef}
-            type="button"
-            onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden p-2 text-zinc-400 hover:text-foreground hover:bg-white/5 rounded-lg transition-all"
-            aria-label="Open menu"
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
-            id="btn-mobile-menu-open"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
+              <Menu className="w-5 h-5" />
+            </button>
           </div>
         </GlassEffect>
       </nav>
