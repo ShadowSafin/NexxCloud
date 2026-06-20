@@ -5,7 +5,7 @@ import HeroDeployCommand from "./HeroDeployCommand";
 
 export default function SelfHosting() {
   return (
-    <section id="self-hosting" className="defer-render py-24 md:py-32 px-6 md:px-12 bg-black relative z-10 overflow-hidden">
+    <section id="self-hosting" className="defer-render py-24 md:py-32 px-6 md:px-12 relative z-10 overflow-hidden">
       {/* Decorative background glows */}
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full bg-brand-cyan/5 blur-[120px] pointer-events-none animate-ambient-glow" />
 

@@ -51,7 +51,7 @@ export default function Roadmap() {
   ];
 
   return (
-    <section id="roadmap" className="defer-render py-24 md:py-32 px-6 md:px-12 bg-[#030303] relative z-10">
+    <section id="roadmap" className="defer-render py-24 md:py-32 px-6 md:px-12 relative z-10">
       <div className="max-w-4xl mx-auto">
         
         {/* Header Block */}
