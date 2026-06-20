@@ -55,7 +55,7 @@ export default function SelfHosting() {
           <div className="lg:col-span-6 relative flex justify-center items-center pointer-events-none hidden lg:flex">
              {/* Fade edges into the black background */}
              <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_100px_40px_black] z-10" />
-             <img src="/about-blackhole.jpg" alt="Black Hole" className="w-full h-auto max-w-[500px] object-cover rounded-2xl opacity-80 mix-blend-screen" />
+             <img src="https://violet-peaceful-nightingale-428.mypinata.cloud/ipfs/bafkreicsqjvbkiaavlqp6br4vm25n46rb55aowsuuzqljmqctxqpjxrw2e" alt="Black Hole" className="w-full h-auto max-w-[500px] object-cover rounded-2xl opacity-80 mix-blend-screen" />
           </div>
         </div>
 

@@ -10,7 +10,7 @@ export default function Hero() {
     <section className="relative min-h-screen bg-black overflow-hidden px-6 md:px-12 flex flex-col justify-between pt-24 pb-12">
       {/* Full Screen Background Video */}
       <video
-        src="/Black_hole_accretion_disk_rotation_loop2.mp4"
+        src="https://violet-peaceful-nightingale-428.mypinata.cloud/ipfs/bafybeic44zpotmexdegal6p6x6bfiqljap7gf2opbjedhz4ufavjuuolka"
         autoPlay
         loop
         muted
